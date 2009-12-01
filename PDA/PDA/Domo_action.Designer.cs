@@ -35,12 +35,12 @@
             this.menuItem2 = new System.Windows.Forms.MenuItem();
             this.menuItem3 = new System.Windows.Forms.MenuItem();
             this.menuItem4 = new System.Windows.Forms.MenuItem();
-            this.NextButton = new System.Windows.Forms.Button();
             this.BackButton = new System.Windows.Forms.Button();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.labelState = new System.Windows.Forms.Label();
-            this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.linkLabel3 = new System.Windows.Forms.LinkLabel();
+            this.SetPropButton = new System.Windows.Forms.Button();
+            this.PropComboBox = new System.Windows.Forms.ComboBox();
+            this.PropTextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // mainMenu1
@@ -71,15 +71,6 @@
             // 
             this.menuItem4.Text = "Add";
             // 
-            // NextButton
-            // 
-            this.NextButton.Location = new System.Drawing.Point(126, 213);
-            this.NextButton.Name = "NextButton";
-            this.NextButton.Size = new System.Drawing.Size(88, 38);
-            this.NextButton.TabIndex = 14;
-            this.NextButton.Text = "Next";
-            this.NextButton.Click += new System.EventHandler(this.NextButton_Click);
-            // 
             // BackButton
             // 
             this.BackButton.Location = new System.Drawing.Point(21, 213);
@@ -89,41 +80,48 @@
             this.BackButton.Text = "Back";
             this.BackButton.Visible = false;
             // 
-            // linkLabel1
-            // 
-            this.linkLabel1.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Underline);
-            this.linkLabel1.Location = new System.Drawing.Point(3, 33);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(58, 25);
-            this.linkLabel1.TabIndex = 19;
-            this.linkLabel1.Text = "Floors/";
-            // 
             // labelState
             // 
             this.labelState.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular);
             this.labelState.Location = new System.Drawing.Point(0, 6);
             this.labelState.Name = "labelState";
             this.labelState.Size = new System.Drawing.Size(240, 18);
-            this.labelState.Text = "FLOORS";
+            this.labelState.Text = "On/Off";
             this.labelState.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // linkLabel2
-            // 
-            this.linkLabel2.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Underline);
-            this.linkLabel2.Location = new System.Drawing.Point(58, 33);
-            this.linkLabel2.Name = "linkLabel2";
-            this.linkLabel2.Size = new System.Drawing.Size(86, 25);
-            this.linkLabel2.TabIndex = 21;
-            this.linkLabel2.Text = "Divisions /";
             // 
             // linkLabel3
             // 
             this.linkLabel3.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Underline);
-            this.linkLabel3.Location = new System.Drawing.Point(135, 33);
+            this.linkLabel3.Location = new System.Drawing.Point(4, 33);
             this.linkLabel3.Name = "linkLabel3";
             this.linkLabel3.Size = new System.Drawing.Size(77, 25);
             this.linkLabel3.TabIndex = 23;
             this.linkLabel3.Text = "Devices/";
+            // 
+            // SetPropButton
+            // 
+            this.SetPropButton.Location = new System.Drawing.Point(135, 213);
+            this.SetPropButton.Name = "SetPropButton";
+            this.SetPropButton.Size = new System.Drawing.Size(55, 37);
+            this.SetPropButton.TabIndex = 26;
+            this.SetPropButton.Text = "SET";
+            this.SetPropButton.Visible = false;
+            // 
+            // PropComboBox
+            // 
+            this.PropComboBox.Location = new System.Drawing.Point(60, 88);
+            this.PropComboBox.Name = "PropComboBox";
+            this.PropComboBox.Size = new System.Drawing.Size(115, 22);
+            this.PropComboBox.TabIndex = 28;
+            this.PropComboBox.Visible = false;
+            // 
+            // PropTextBox
+            // 
+            this.PropTextBox.Location = new System.Drawing.Point(34, 127);
+            this.PropTextBox.Name = "PropTextBox";
+            this.PropTextBox.Size = new System.Drawing.Size(167, 21);
+            this.PropTextBox.TabIndex = 29;
+            this.PropTextBox.Visible = false;
             // 
             // Domo_action
             // 
@@ -131,12 +129,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(240, 268);
+            this.Controls.Add(this.PropTextBox);
+            this.Controls.Add(this.PropComboBox);
+            this.Controls.Add(this.SetPropButton);
             this.Controls.Add(this.linkLabel3);
-            this.Controls.Add(this.linkLabel2);
             this.Controls.Add(this.labelState);
-            this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.BackButton);
-            this.Controls.Add(this.NextButton);
             this.Menu = this.mainMenu1;
             this.Name = "Domo_action";
             this.Text = "DomoMobile";
@@ -151,11 +149,11 @@
         private System.Windows.Forms.MenuItem menuItem5;
         private System.Windows.Forms.MenuItem menuItem3;
         private System.Windows.Forms.MenuItem menuItem4;
-        private System.Windows.Forms.Button NextButton;
         private System.Windows.Forms.Button BackButton;
-        private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Label labelState;
-        private System.Windows.Forms.LinkLabel linkLabel2;
         private System.Windows.Forms.LinkLabel linkLabel3;
+        private System.Windows.Forms.Button SetPropButton;
+        private System.Windows.Forms.ComboBox PropComboBox;
+        private System.Windows.Forms.TextBox PropTextBox;
     }
 }

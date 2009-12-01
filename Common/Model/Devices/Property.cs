@@ -9,5 +9,11 @@ namespace DomoMobile.Common
     {
         public PropertyType Type { get; set; }
         public String Value { get; set; }
+
+        public override string ToString()
+        {
+            return Type.Name;
+        }
+
     }
 }

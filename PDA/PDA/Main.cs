@@ -22,6 +22,7 @@ namespace PDA
         private Floor MyFloor;
         private Device MyDevice;
         private Division MyDivision;
+        private Property MyProperty;
 
         private DomoServiceClient Client;
 
@@ -32,44 +33,49 @@ namespace PDA
             InitializeComponent();
             ////Apagar
             IpTextBox.Text = "192.168.0.15";
+            user.Text = "David";
+            pass.Text = "123";
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (Client == null && IpLabel.Text.Length > 0)
+            if (!IpLabel.Text.Equals(""))
             {
-                Cursor.Current = Cursors.WaitCursor;
+                if (Client == null)
+                    Connect(IpTextBox.Text);
                 try
                 {
-                    SMC.Binding binding = DomoServiceClient.CreateDefaultBinding();
-                    string remoteAddress = DomoServiceClient.EndpointAddress.Uri.ToString();
-                    remoteAddress = remoteAddress.Replace("localhost", IpTextBox.Text);
-                    EndpointAddress endpoint = new EndpointAddress(remoteAddress);
-                    Client = new DomoServiceClient(binding, endpoint);
+                    var houses = Client.GetHouses();
+                    foreach (var item in houses)
+                    {
+                        listBox1.Items.Add(item);
+                    }
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
-                Cursor.Current = Cursors.Default;
+                goToStep2();
             }
 
+        }
+        public void Connect(String ip)
+        {
+
+            Cursor.Current = Cursors.WaitCursor;
             try
             {
-                var houses = Client.GetHouses();
-                foreach (var item in houses)
-                {
-                    listBox1.Items.Add(item);
-                }
+                SMC.Binding binding = DomoServiceClient.CreateDefaultBinding();
+                string remoteAddress = DomoServiceClient.EndpointAddress.Uri.ToString();
+                remoteAddress = remoteAddress.Replace("localhost", ip);
+                EndpointAddress endpoint = new EndpointAddress(remoteAddress);
+                Client = new DomoServiceClient(binding, endpoint);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-
-            
-            goToStep2();
-
+            Cursor.Current = Cursors.Default;
         }
 
         private void goToStep1()
@@ -125,9 +131,6 @@ namespace PDA
             label4.Visible = true;
             label5.Visible = true;
             LoginButton.Visible = true;
-
-            user.Text = "David";
-            pass.Text = "123";
         }
 
         private void goToStep4()
@@ -142,7 +145,6 @@ namespace PDA
             }
 
             listBox1.Visible = true;
-            button1.Visible = false;
             UpButton.Visible = true;
             DownButton.Visible = true;
             labelState.Text = "FLOORS";
@@ -151,6 +153,9 @@ namespace PDA
             //BackButton.Visible = true;
             NextButton.Visible = true;
 
+            linkLabel2.Visible = false;
+            button1.Visible = false;
+            BackButton.Visible = false;
             label3.Visible = false;
             user.Visible = false;
             pass.Visible = false;
@@ -161,32 +166,31 @@ namespace PDA
 
         private void goToStep5()
         {
-            
             BackButton.Visible = true;
             linkLabel2.Visible = true;
             linkLabel3.Visible = false;
-           
-            labelState.Text = "Divisions";
 
             if (state == 4)
                 MyFloor = (Floor)listBox1.SelectedItem;
+
+            labelState.Text = MyFloor.Name;
 
             listBox1.Items.Clear();
             foreach (var div in MyFloor.Divisions)
             {
                 listBox1.Items.Add(div);
             }
-            state = 5;
 
-        }
+            state = 5;
+        } 
 
         private void goToStep6()
         {
             linkLabel3.Visible = true;
-           
+
             labelState.Text = "Devices";
 
-            if (state == 5) 
+            if (state == 5)
                 MyDivision = (Division)listBox1.SelectedItem;
             listBox1.Items.Clear();
             foreach (var dev in MyDivision.Devices)
@@ -195,41 +199,107 @@ namespace PDA
             }
             state = 6;
         }
-        
+
         private void goToStep7()
         {
-            state = 7;
-            listBox1.Items.Clear();
-            labelState.Text = "Nome do Device";
-            MyDevice = (Device)listBox1.SelectedItem;
-            foreach (var propt in MyDevice.Properties)
+            if (state == 8)
             {
-                listBox1.Items.Add(propt.ToString());
+                listBox1.Visible = true;
+                UpButton.Visible = true;
+                DownButton.Visible = true;
+                NextButton.Visible = true;
+
+                SetPropButton.Visible = false;
+                PropTextBox.Visible = false;
+                PropComboBox.Visible = false;
             }
-            
+            else
+            {
+                MyDevice = (Device)listBox1.SelectedItem;
+                listBox1.Items.Clear();
+                foreach (var propt in MyDevice.Properties)
+                {
+                    listBox1.Items.Add(propt);
+                }
+            }
+            labelState.Text = MyDevice.Name;
+            state = 7;
+        }
+
+        private void goToStep8()
+        {
+            state = 8;
+            MyProperty = (Property)listBox1.SelectedItem;
+            labelState.Text = MyProperty.ToString();
+
+            listBox1.Visible = false;
+            UpButton.Visible = false;
+            DownButton.Visible = false;
+            NextButton.Visible = false;
+
+            SetPropButton.Visible = true;
+            PropComboBox.Items.Clear();
+
+            try
+            {
+                MyProperty.Value = Client.Get(MyDevice.ID, MyProperty.Type.ID);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            var typeOfValue = MyProperty.Type.TypeOfValue.ToString();
+            if (typeOfValue.Equals("VECTOR"))
+            {
+                PropTextBox.Visible = true;
+                PropTextBox.Text = MyProperty.Value;
+            }
+            else
+            {
+                PropComboBox.Visible = true;
+                if (typeOfValue.Equals("SCALAR"))
+                {
+                    var scalar = ((ScalarValueType)(MyProperty.Type.ValueType)).TypeOfValue;
+                    for (int i = scalar.MinValue; i <= scalar.MaxValue; i += scalar.Step)
+                        PropComboBox.Items.Add(i);
+                    PropComboBox.SelectedItem = int.Parse(MyProperty.Value);
+                }
+                else
+                {
+                    var enumerated = ((EnumeratedValueType)(MyProperty.Type.ValueType)).TypeOfValue;
+                    foreach (var item in enumerated)
+                    {
+                        PropComboBox.Items.Add(item);
+                    }
+                    PropComboBox.SelectedText = MyProperty.Value;
+                }
+            }
         }
 
         private void button1_Click_1(object sender, EventArgs e)
         {
             string house = "";
-            if (listBox1.SelectedIndex != -1 && listBox1.SelectedIndex != SelectedHouse)
+            if (listBox1.SelectedIndex != -1)
             {
-                try
+                if (listBox1.SelectedIndex != SelectedHouse)
                 {
-                    SelectedHouse = listBox1.SelectedIndex;
-                    house = Client.GetHouseDescription(SelectedHouse);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
+                    try
+                    {
+                        SelectedHouse = listBox1.SelectedIndex;
+                        house = Client.GetHouseDescription(SelectedHouse);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
 
-                Parser c = new Parser();
-                XDocument doc = XDocument.Parse(house);
-                Myhouse = c.getHouse(doc);
+                    Parser c = new Parser();
+                    XDocument doc = XDocument.Parse(house);
+                    Myhouse = c.getHouse(doc);
+                }
+                goToStep3();
             }
-            goToStep3();
-
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -260,7 +330,115 @@ namespace PDA
                 goToStep2();
             else if (state == 2)
                 goToStep1();
+        }
 
+        private void menuItem2_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void LoginButton_Click(object sender, EventArgs e)
+        {
+            int logged = 0;
+            foreach (var item in Myhouse.Users)
+            {
+                if (item.Username.ToString().Equals(user.Text) && item.Password.ToString().Equals(pass.Text))
+                {
+                    goToStep4();
+                    logged = 1;
+                    break;
+                }
+            }
+            if (logged == 0)
+                wrongLabel.Visible = true;
+        }
+
+        private void Enter_Click(object sender, EventArgs e)
+        {
+            switch (state)
+            {
+                case 1: button1_Click(sender, e); break;
+                case 2: button1_Click_1(sender, e); break;
+                case 3: LoginButton_Click(sender, e); break;
+                case 4: NextButton_Click_1(sender, e); break;
+                case 5: NextButton_Click_1(sender, e); break;
+                case 6: NextButton_Click_1(sender, e); break;
+                case 7: NextButton_Click_1(sender, e); break;
+                case 8: SetPropButton_Click(sender, e); break;
+                default:
+                    break;
+            }
+
+        }
+
+        private void menuItem4_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("DomoMobile :P");
+        }
+
+        private void NextButton_Click_1(object sender, EventArgs e)
+        {
+            if (listBox1.SelectedIndex != -1)
+                switch (state)
+                {
+                    case 4: goToStep5(); break;
+                    case 5: goToStep6(); break;
+                    case 6: goToStep7(); break;
+                    case 7: goToStep8(); break;
+                    default:
+                        break;
+                }
+        }
+
+        private void BackButton_Click(object sender, EventArgs e)
+        {
+
+            switch (state)
+            {
+                case 5: goToStep4(); break;
+                case 6: goToStep5(); break;
+                case 7: goToStep6(); break;
+                case 8: goToStep7(); break;
+                default:
+                    break;
+            }
+        }
+
+        private void SetPropButton_Click(object sender, EventArgs e)
+        {
+            // vector?
+            string newValue;
+            if (PropTextBox.Visible)
+            {
+                newValue = PropTextBox.Text;
+                callGet(newValue);
+            }
+            else if (PropComboBox.SelectedIndex != -1)
+            {
+                if (MyProperty.Type.TypeOfValue.ToString().Equals("ENUM"))
+                    newValue = ((Enumerated)PropComboBox.SelectedItem).Value;
+                else
+                    newValue = PropComboBox.SelectedItem.ToString();
+                callGet(newValue);
+            }
+        }
+
+        /////////////////
+        public void callGet(string newValue)
+        {
+            try
+            {
+                var suc = Client.Set(MyDevice.ID, MyProperty.Type.ID, newValue);
+                if (suc == 1)
+                    MyProperty.Value = newValue;
+                else
+                    MessageBox.Show("Is Not Possible To Change This Value!");
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
@@ -292,101 +470,6 @@ namespace PDA
                     goToStep2();
                 else if (state == 2)
                     goToStep1();
-            }
-
-        }
-
-        private void menuItem2_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-
-        private void LoginButton_Click(object sender, EventArgs e)
-        {
-            int logged = 0;
-
-           foreach (var item in Myhouse.Users)
-            {
-                if (item.Username.ToString().Equals(user.Text) && item.Password.ToString().Equals(pass.Text))
-                {
-                    goToStep4();
-                    logged = 1;
-                    break;
-                }
-            }
-            if(logged == 0)
-                wrongLabel.Visible = true;
-            
-        }
-
-        private void Enter_Click(object sender, EventArgs e)
-        {
-            switch (state)
-            {
-                case 1: button1_Click(sender, e); break;
-                case 2: button1_Click_1(sender, e); break;
-                case 3: LoginButton_Click(sender, e); break;
-                default:
-                    break;
-            }
-
-        }
-
-        private void menuItem4_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("DomoMobile :P");
-        }
-
-        private void NextButton_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void linkLabel2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void labelState_ParentChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void linkLabel1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void linkLabel3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void NextButton_Click_1(object sender, EventArgs e)
-        {
-            if(listBox1.SelectedIndex != -1)
-            switch (state)
-            {
-                case 4: goToStep5(); break;
-                case 5: goToStep6(); break;
-                case 6: goToStep7(); break;
-                default:
-                    break;
-            }
-
-        }
-
-        private void BackButton_Click(object sender, EventArgs e)
-        {
-            
-            switch (state)
-            {
-                case 5: goToStep4(); break;
-                case 6: goToStep5(); break;
-                case 7: goToStep6(); break;
-                default:
-                    break;
             }
 
         }

@@ -53,6 +53,10 @@ namespace DomoMobile.Common
     {
         public string Description { get; set; }
         public string Value { get; set; }
+
+        public override string ToString() {
+            return Description;
+        }
     }
 
     public abstract class Conversion {
