@@ -240,15 +240,18 @@ namespace PDA
 
                 var deviceTypeRef = int.Parse(item.Attribute("RefDeviceType").Value);
 
-                DeviceType devtype = (from a in house.DeviceTypes
-                                      where a.ID == deviceTypeRef
-                                      select a).First();
+                DeviceType devtype = house.DeviceTypes.First(d => d.ID.Equals(deviceTypeRef));
+                //DeviceType devtype = (from a in house.DeviceTypes
+                //                      where a.ID == deviceTypeRef
+                //                      select a).First();
                 dev.MyDeviceType = devtype;
 
                 foreach (var proptype in devtype.PropertyTypes)
             	{
-                    var property = new Property();
-                    property.Type = proptype;
+                    var property = new Property()
+                    {
+                        Type = proptype
+                    };
                     dev.Properties.Add(property);
 	            }
 
