@@ -18,7 +18,7 @@ namespace Service
               Console.WriteLine ("Local Machine's Host Name: " +  strHostName);
                  
           // Then using host name, get the IP address list..
-          IPHostEntry ipEntry = Dns.GetHostByName (strHostName);
+          IPHostEntry ipEntry = Dns.GetHostByName(strHostName);
           IPAddress [] addr = ipEntry.AddressList;
           
           for (int i = 0; i < addr.Length; i++)
