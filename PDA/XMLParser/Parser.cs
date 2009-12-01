@@ -189,10 +189,11 @@ namespace PDA
                     prop.AcessMode = (PropertyType.AcessModes)am;
 
                     var valueType = Enum.Parse(typeof(PropertyType.TypeOfValues), proptype.Attribute("ValueType").Value, true);
-                    prop.TypeOfValue = (PropertyType.TypeOfValues)am;
+                    prop.TypeOfValue = (PropertyType.TypeOfValues)valueType;
 
                     var refID = int.Parse(proptype.Attribute("RefValueType").Value);
 
+                    
    Console.WriteLine(valueType.ToString() + " + " + prop.TypeOfValue);
 
                     if (valueType.ToString().Equals("SCALAR"))
