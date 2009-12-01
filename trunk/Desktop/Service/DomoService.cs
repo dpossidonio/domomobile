@@ -12,7 +12,7 @@ namespace Service
         {
             //See available houses
             Console.WriteLine("GetHouses : Casa de Campo, Apartamento Las Vegas, Casa Lisboa");
-            return new string[] { "Casa de Campo", "Apartamento Las Vegas", "Casa Lisboa" };
+            return new string[] { "Casa de Campo"};
         }
 
         public string GetHouseDescription(int id)
@@ -34,7 +34,7 @@ namespace Service
             return text;
         }
 
-        public int Set(int RefDevice, int RefProperty, int Value)
+        public int Set(int RefDevice, int RefProperty, string Value)
         {
             Console.WriteLine("SET : Foi Alterada a propriedade:"+RefProperty+" do Device:"+RefDevice+" para o valor #"+Value);
             return 1;
@@ -43,6 +43,7 @@ namespace Service
         public string Get(int RefDevice, int RefProperty)
         {
             Console.WriteLine("GET : Foi lida a propriedade:" + RefProperty + " do Device:" + RefDevice);
+            
             return "1";
         }
 

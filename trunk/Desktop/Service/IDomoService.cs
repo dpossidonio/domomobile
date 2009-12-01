@@ -16,7 +16,7 @@ namespace Service
         string GetHouseDescription(int i);
 
         [OperationContract]
-        int Set(int RefDevice,int RefProperty,int Value);
+        int Set(int RefDevice,int RefProperty,string Value);
 
         [OperationContract]
         string Get(int RefDevice, int RefProperty);

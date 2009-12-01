@@ -62,6 +62,10 @@
     <ScalarValueType ID="2" Name="Potência" NumBits="16" MinValue="0" MaxValue="800" Step="10" Units="Watt">
       <ValueConversion Type="FORMULA" Ref="1" />
     </ScalarValueType>
+
+    <ScalarValueType ID="3" Name="Temperatura (0-50)"  NumBits="8" MinValue="0" MaxValue="50" Step="2" Units="Percentagem">
+      <ValueConversion Type="NONE" Ref="" />
+    </ScalarValueType>
   </ScalarValueTypeList>
 
 
@@ -101,7 +105,13 @@
 
     <DeviceType ID="2" Name="Sensor-Temperatura">
       <PropertyTypeList>
-        <PropertyType ID="2" Name="Temperatura" AccessMode="RO" ValueType="SCALAR" RefValueType="1" />
+        <PropertyType ID="2" Name="Temperatura" AccessMode="RO" ValueType="SCALAR" RefValueType="3" />
+      </PropertyTypeList>
+    </DeviceType>
+
+    <DeviceType ID="3" Name="Mostrador de Texto">
+      <PropertyTypeList>
+        <PropertyType ID="2" Name="Texto" AccessMode="RW" ValueType="VECTOR" RefValueType="1" />
       </PropertyTypeList>
     </DeviceType>
   </DeviceTypeList>
@@ -121,10 +131,23 @@
   <DeviceList>
     <Device ID="1" RefDeviceType="1" Name="Candeeiro-Mesa" Address="#0100" RefDivision="2" AccessLevel="3,5" UserBlocked="-,27">
       <DeviceServiceList>
-        <DeviceService RefService="1" />
-        <DeviceService RefService="4" />
+        <DeviceService RefService="2" />
+        <DeviceService RefService="3" />
       </DeviceServiceList>
     </Device>
+
+    <Device ID="2" RefDeviceType="2" Name="Temperatura Ambiente" Address="#0125" RefDivision="2" AccessLevel="3,5" UserBlocked="-,27">
+      <DeviceServiceList>
+        <DeviceService RefService="1" />
+      </DeviceServiceList>
+    </Device>
+    
+      <Device ID="3" RefDeviceType="3" Name="Painel Informativo" Address="#0100" RefDivision="2" AccessLevel="3,5" UserBlocked="-,27">
+        <DeviceServiceList>
+          <DeviceService RefService="5" />
+        </DeviceServiceList>
+      </Device>
+    
   </DeviceList>  
   
 </HomeDescription>
