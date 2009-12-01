@@ -193,9 +193,6 @@ namespace PDA
 
                     var refID = int.Parse(proptype.Attribute("RefValueType").Value);
 
-                    
-   Console.WriteLine(valueType.ToString() + " + " + prop.TypeOfValue);
-
                     if (valueType.ToString().Equals("SCALAR"))
                         prop.ValueType = house.PropertyValueTypes.First(x => x is ScalarValueType && x.ID == refID);
 
