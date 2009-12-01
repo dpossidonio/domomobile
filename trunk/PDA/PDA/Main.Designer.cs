@@ -58,6 +58,9 @@
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.BackButton = new System.Windows.Forms.Button();
             this.NextButton = new System.Windows.Forms.Button();
+            this.PropTextBox = new System.Windows.Forms.TextBox();
+            this.PropComboBox = new System.Windows.Forms.ComboBox();
+            this.SetPropButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // mainMenu1
@@ -246,7 +249,7 @@
             this.linkLabel3.TabIndex = 43;
             this.linkLabel3.Text = "Devices/";
             this.linkLabel3.Visible = false;
-            this.linkLabel3.Click += new System.EventHandler(this.linkLabel3_Click);
+
             // 
             // linkLabel2
             // 
@@ -257,7 +260,6 @@
             this.linkLabel2.TabIndex = 42;
             this.linkLabel2.Text = "Divisions /";
             this.linkLabel2.Visible = false;
-            this.linkLabel2.Click += new System.EventHandler(this.linkLabel2_Click);
             // 
             // labelState
             // 
@@ -268,7 +270,7 @@
             this.labelState.Text = "FLOORS";
             this.labelState.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.labelState.Visible = false;
-            this.labelState.ParentChanged += new System.EventHandler(this.labelState_ParentChanged);
+
             // 
             // linkLabel1
             // 
@@ -279,7 +281,7 @@
             this.linkLabel1.TabIndex = 41;
             this.linkLabel1.Text = "Floors/";
             this.linkLabel1.Visible = false;
-            this.linkLabel1.Click += new System.EventHandler(this.linkLabel1_Click);
+
             // 
             // BackButton
             // 
@@ -301,12 +303,41 @@
             this.NextButton.Visible = false;
             this.NextButton.Click += new System.EventHandler(this.NextButton_Click_1);
             // 
+            // PropTextBox
+            // 
+            this.PropTextBox.Location = new System.Drawing.Point(34, 134);
+            this.PropTextBox.Name = "PropTextBox";
+            this.PropTextBox.Size = new System.Drawing.Size(167, 21);
+            this.PropTextBox.TabIndex = 54;
+            this.PropTextBox.Visible = false;
+            // 
+            // PropComboBox
+            // 
+            this.PropComboBox.Location = new System.Drawing.Point(60, 95);
+            this.PropComboBox.Name = "PropComboBox";
+            this.PropComboBox.Size = new System.Drawing.Size(115, 22);
+            this.PropComboBox.TabIndex = 53;
+            this.PropComboBox.Visible = false;
+            // 
+            // SetPropButton
+            // 
+            this.SetPropButton.Location = new System.Drawing.Point(135, 220);
+            this.SetPropButton.Name = "SetPropButton";
+            this.SetPropButton.Size = new System.Drawing.Size(55, 37);
+            this.SetPropButton.TabIndex = 52;
+            this.SetPropButton.Text = "SET";
+            this.SetPropButton.Visible = false;
+            this.SetPropButton.Click += new System.EventHandler(this.SetPropButton_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(240, 268);
+            this.Controls.Add(this.PropTextBox);
+            this.Controls.Add(this.PropComboBox);
+            this.Controls.Add(this.SetPropButton);
             this.Controls.Add(this.linkLabel3);
             this.Controls.Add(this.linkLabel2);
             this.Controls.Add(this.labelState);
@@ -368,6 +399,9 @@
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Button BackButton;
         private System.Windows.Forms.Button NextButton;
+        private System.Windows.Forms.TextBox PropTextBox;
+        private System.Windows.Forms.ComboBox PropComboBox;
+        private System.Windows.Forms.Button SetPropButton;
 
     }
 }

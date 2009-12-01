@@ -18,7 +18,7 @@ public interface IDomoService
     
     string GetHouseDescription(int i);
     
-    int Set(int RefDevice, int RefProperty, int Value);
+    int Set(int RefDevice, int RefProperty, string Value);
     
     string Get(int RefDevice, int RefProperty);
 }
@@ -104,14 +104,14 @@ public partial class SetRequest
     [System.Xml.Serialization.XmlElementAttribute(Namespace="http://DomoMobile.com", Order=1)]
     public int RefProperty;
     
-    [System.Xml.Serialization.XmlElementAttribute(Namespace="http://DomoMobile.com", Order=2)]
-    public int Value;
+    [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Namespace="http://DomoMobile.com", Order=2)]
+    public string Value;
     
     public SetRequest()
     {
     }
     
-    public SetRequest(int RefDevice, int RefProperty, int Value)
+    public SetRequest(int RefDevice, int RefProperty, string Value)
     {
         this.RefDevice = RefDevice;
         this.RefProperty = RefProperty;
@@ -184,7 +184,7 @@ public partial class GetResponse
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
 public partial class DomoServiceClient : Microsoft.Tools.ServiceModel.CFClientBase<IDomoService>, IDomoService
 {
-
+    
     public static System.ServiceModel.EndpointAddress EndpointAddress = new System.ServiceModel.EndpointAddress("http://localhost:8000/DomoService/DomoService");
     
     public DomoServiceClient() : 
@@ -245,7 +245,7 @@ public partial class DomoServiceClient : Microsoft.Tools.ServiceModel.CFClientBa
         return retVal;
     }
     
-    public int Set(int RefDevice, int RefProperty, int Value)
+    public int Set(int RefDevice, int RefProperty, string Value)
     {
         SetRequest request = new SetRequest(RefDevice, RefProperty, Value);
         SetResponse response = this.Set(request);
