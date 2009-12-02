@@ -1,4 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    
+    The primary goals of this format is to describe in detail
+    all devices connected to the Domobus Network. 
+    
+-->
+
 <HomeDescription>
   <!-- HOUSE DEFINITION #############################-->
   <House ID="1" Name="Vivenda ist" Address="Av. Prof. Dr. Cavaco Silva" Phone="214233200">

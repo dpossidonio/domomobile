@@ -4,8 +4,9 @@ using System.Reflection;
 
 namespace Service
 {
-    public class DomoService : IDomoService
+    partial class DomoService : IDomoService
     {
+        
         #region IDomoService Members
 
         public string Echo() {

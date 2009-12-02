@@ -66,7 +66,6 @@ namespace PDA
                     MyProperty.Value = newValue;
                 else
                     MessageBox.Show("Is Not Possible To Change This Value!");
-
             }
             catch (Exception ex)
             {
@@ -115,13 +114,44 @@ namespace PDA
             return house;
         }
 
+        private string[] callGetHouses()
+        {
+            string[] housesList = {};
+            try
+            {
+                housesList = Client.GetHouses(MyUsername);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            return housesList;
+        }
+
+        private bool callLogin()
+        {
+            bool logged = false; 
+            try
+            {
+                if (Client.Login(user.Text, pass.Text))
+                {
+                    MyUsername = user.Text;
+                    logged = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            return logged;
+        }
+
         /// <summary>
         /// Steps
         /// </summary>
         private void goToStep1()
         {
             state = 1;
-            listBox1.Items.Clear();
             IpLabel.Visible = true;
             IpTextBox.Visible = true;
         }
@@ -134,46 +164,60 @@ namespace PDA
             IpLabel.Visible = false;
             IpTextBox.Visible = false;
 
-            label1.Visible = false;
+            labelChooseOption.Visible = false;
             listBox1.Visible = false;
-            button1.Visible = false;
+            buttonGetAccess.Visible = false;
             UpButton.Visible = false;
             DownButton.Visible = false;
 
             StartButton.Visible = true;
-            menuItem5.Enabled = false;
+            menuBack.Enabled = false;
 
             user.Visible = true;
             pass.Visible = true;
-            label4.Visible = true;
-            label5.Visible = true;
+            labelUsername.Visible = true;
+            labelPassword.Visible = true;
             LoginButton.Visible = true;
             StartButton.Visible = false;
         }
 
         private void goToStep3()
         {
+            if (state == 4)
+            {
+                var houses = callGetHouses();
+                listBox1.Items.Clear();
+                foreach (var item in houses)
+                {
+                    listBox1.Items.Add(item);
+                }
+            }
+            else {
+                menuBack.Enabled = true;
+                labelChooseOption.Visible = true;
+                listBox1.Visible = true;
+                UpButton.Visible = true;
+                DownButton.Visible = true;
+
+                wrongLabel.Visible = false;
+                user.Visible = false;
+                pass.Visible = false;
+                labelUsername.Visible = false;
+                labelPassword.Visible = false;
+                LoginButton.Visible = false;
+            }
+
+            buttonGetAccess.Visible = true;
+
+            BackButton.Visible = false;
+            NextButton.Visible = false;
+            labelState.Visible = false;
+            linkLabel1.Visible = false;
+
+            labelProgramName.Visible = true;
+
+
             state = 3;
-
-            label1.Visible = false;
-            listBox1.Visible = false;
-            button1.Visible = false;
-            UpButton.Visible = false;
-            DownButton.Visible = false;
-
-            wrongLabel.Visible = false;
-            user.Visible = false;
-            pass.Visible = false;
-            label4.Visible = false;
-            label5.Visible = false;
-            LoginButton.Visible = false;
-
-            menuItem5.Enabled = true;
-            label1.Visible = true;
-            listBox1.Visible = true;
-            button1.Visible = true;
-            UpButton.Visible = true;
-            DownButton.Visible = true;
         }
 
         private void goToStep4()
@@ -192,17 +236,16 @@ namespace PDA
             labelState.Text = "FLOORS";
             labelState.Visible = true;
             linkLabel1.Visible = true;
-            //BackButton.Visible = true;
+            BackButton.Visible = true;
             NextButton.Visible = true;
 
             linkLabel2.Visible = false;
-            button1.Visible = false;
-            BackButton.Visible = false;
-            label3.Visible = false;
+            buttonGetAccess.Visible = false;
+            labelProgramName.Visible = false;
             user.Visible = false;
             pass.Visible = false;
-            label4.Visible = false;
-            label5.Visible = false;
+            labelUsername.Visible = false;
+            labelPassword.Visible = false;
             LoginButton.Visible = false;
         }
 
@@ -249,7 +292,7 @@ namespace PDA
                 UpButton.Visible = true;
                 DownButton.Visible = true;
                 NextButton.Visible = true;
-                label1.Visible = true;
+                labelChooseOption.Visible = true;
 
                 SetPropButton.Visible = false;
                 PropTextBox.Visible = false;
@@ -293,7 +336,7 @@ namespace PDA
             {
                 PropTextBox.Visible = true;
                 PropTextBox.Text = MyProperty.Value;
-                label1.Visible = false;
+                labelChooseOption.Visible = false;
             }
             else
             {
@@ -314,8 +357,6 @@ namespace PDA
                     {
                         PropComboBox.Items.Add(item);
                     }
-                    // 0 - Desligado , 1 - Ligado
-                    //TODO
                     PropComboBox.SelectedItem = enumerated.First(x => x.Value.Equals(MyProperty.Value));
 
                 }
@@ -337,30 +378,18 @@ namespace PDA
 
         private void LoginButton_Click(object sender, EventArgs e)
         {
-            int logged = 0;
-            try
-            {
-                if (Client.Login(user.Text, pass.Text))
-                {
-                    MyUsername = user.Text;
-                    var houses = Client.GetHouses(MyUsername);
-                    listBox1.Items.Clear();
-                    foreach (var item in houses)
-                    {
-                        listBox1.Items.Add(item);
-                    }
-                    logged = 1;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
-            if (logged == 0)
+            if (!callLogin())
                 wrongLabel.Visible = true;
             else
+            {
+                var houses = callGetHouses();
+                listBox1.Items.Clear();
+                foreach (var item in houses)
+                {
+                    listBox1.Items.Add(item);
+                }
                 goToStep3();
+            }
         }
 
         private void homeChoice_Click(object sender, EventArgs e)
@@ -456,6 +485,7 @@ namespace PDA
         {
             switch (state)
             {
+                case 4: goToStep3(); break;
                 case 5: goToStep4(); break;
                 case 6: goToStep5(); break;
                 case 7: goToStep6(); break;
@@ -530,8 +560,10 @@ namespace PDA
             MenuItem i = new MenuItem();
             i.Text = "AAA";
             //this.menuItem3.MenuItems.Add(this.addFavoriteMenu);
-            menuItem3.MenuItems.Add(i);
+            menuFavorites.MenuItems.Add(i);
+           
             //TODO
+            
         }
 
     }
