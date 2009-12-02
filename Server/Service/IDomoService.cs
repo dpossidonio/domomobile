@@ -10,15 +10,21 @@ namespace Service
     public interface IDomoService
     {
         [OperationContract]
-        string[] GetHouses();
+        string Echo();
 
         [OperationContract]
-        string GetHouseDescription(int i);
+        bool Login(string Token,string Password);
 
         [OperationContract]
-        int Set(int RefDevice,int RefProperty,string Value);
+        string[] GetHouses(string Token);
 
         [OperationContract]
-        string Get(int RefDevice, int RefProperty);
+        string GetHouseDescription(string Token,int HouseId);
+
+        [OperationContract]
+        int Set(string Token,int RefDevice,int RefProperty,string Value);
+
+        [OperationContract]
+        string Get(string Token,int RefDevice, int RefProperty);
     }
 }
