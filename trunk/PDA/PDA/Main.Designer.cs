@@ -35,7 +35,7 @@
             this.menuItem5 = new System.Windows.Forms.MenuItem();
             this.Enter = new System.Windows.Forms.MenuItem();
             this.menuItem3 = new System.Windows.Forms.MenuItem();
-            this.menuItem4 = new System.Windows.Forms.MenuItem();
+            this.addFavoriteMenu = new System.Windows.Forms.MenuItem();
             this.StartButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.listBox1 = new System.Windows.Forms.ListBox();
@@ -61,6 +61,8 @@
             this.PropTextBox = new System.Windows.Forms.TextBox();
             this.PropComboBox = new System.Windows.Forms.ComboBox();
             this.SetPropButton = new System.Windows.Forms.Button();
+            this.PropUnitText = new System.Windows.Forms.Label();
+            this.linkLabel4 = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 
             // mainMenu1
@@ -78,12 +80,12 @@
             // menuItem2
             // 
             this.menuItem2.Text = "Exit";
-            this.menuItem2.Click += new System.EventHandler(this.menuItem2_Click);
+            this.menuItem2.Click += new System.EventHandler(this.closeMenu_Click);
             // 
             // menuItem5
             // 
             this.menuItem5.Text = "Back";
-            this.menuItem5.Click += new System.EventHandler(this.menuItem5_Click);
+            this.menuItem5.Click += new System.EventHandler(this.backMenu_Click);
             // 
             // Enter
             // 
@@ -92,13 +94,13 @@
             // 
             // menuItem3
             // 
-            this.menuItem3.MenuItems.Add(this.menuItem4);
-            this.menuItem3.Text = "Help";
+            this.menuItem3.MenuItems.Add(this.addFavoriteMenu);
+            this.menuItem3.Text = "Favorites";
             // 
-            // menuItem4
+            // addFavoriteMenu
             // 
-            this.menuItem4.Text = "About";
-            this.menuItem4.Click += new System.EventHandler(this.menuItem4_Click);
+            this.addFavoriteMenu.Text = "Add";
+            this.addFavoriteMenu.Click += new System.EventHandler(this.addFavoriteMenu_Click);
             // 
             // StartButton
             // 
@@ -110,7 +112,7 @@
             this.StartButton.Size = new System.Drawing.Size(150, 68);
             this.StartButton.TabIndex = 0;
             this.StartButton.Text = "Search for Homes";
-            this.StartButton.Click += new System.EventHandler(this.button1_Click);
+            this.StartButton.Click += new System.EventHandler(this.EchoRequest_Click);
             // 
             // label3
             // 
@@ -131,10 +133,10 @@
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(29, 73);
+            this.label1.Location = new System.Drawing.Point(20, 73);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(110, 16);
-            this.label1.Text = "Choose one Home:";
+            this.label1.Size = new System.Drawing.Size(124, 16);
+            this.label1.Text = "Choose one Option:";
             this.label1.Visible = false;
             // 
             // button1
@@ -145,7 +147,7 @@
             this.button1.TabIndex = 10;
             this.button1.Text = "Get Access!";
             this.button1.Visible = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            this.button1.Click += new System.EventHandler(this.homeChoice_Click);
             // 
             // label2
             // 
@@ -162,7 +164,7 @@
             this.UpButton.TabIndex = 12;
             this.UpButton.Text = "UP";
             this.UpButton.Visible = false;
-            this.UpButton.Click += new System.EventHandler(this.button2_Click);
+            this.UpButton.Click += new System.EventHandler(this.upButton_Click);
             // 
             // DownButton
             // 
@@ -172,7 +174,7 @@
             this.DownButton.TabIndex = 13;
             this.DownButton.Text = "DOWN";
             this.DownButton.Visible = false;
-            this.DownButton.Click += new System.EventHandler(this.button3_Click);
+            this.DownButton.Click += new System.EventHandler(this.DownButton_Click);
             // 
             // label4
             // 
@@ -243,18 +245,17 @@
             // linkLabel3
             // 
             this.linkLabel3.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Underline);
-            this.linkLabel3.Location = new System.Drawing.Point(135, 39);
+            this.linkLabel3.Location = new System.Drawing.Point(132, 39);
             this.linkLabel3.Name = "linkLabel3";
             this.linkLabel3.Size = new System.Drawing.Size(77, 25);
             this.linkLabel3.TabIndex = 43;
             this.linkLabel3.Text = "Devices/";
             this.linkLabel3.Visible = false;
-
             // 
             // linkLabel2
             // 
             this.linkLabel2.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Underline);
-            this.linkLabel2.Location = new System.Drawing.Point(58, 39);
+            this.linkLabel2.Location = new System.Drawing.Point(52, 39);
             this.linkLabel2.Name = "linkLabel2";
             this.linkLabel2.Size = new System.Drawing.Size(86, 25);
             this.linkLabel2.TabIndex = 42;
@@ -270,18 +271,16 @@
             this.labelState.Text = "FLOORS";
             this.labelState.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.labelState.Visible = false;
-
             // 
             // linkLabel1
             // 
             this.linkLabel1.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Underline);
-            this.linkLabel1.Location = new System.Drawing.Point(3, 39);
+            this.linkLabel1.Location = new System.Drawing.Point(0, 39);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(58, 25);
             this.linkLabel1.TabIndex = 41;
             this.linkLabel1.Text = "Floors/";
             this.linkLabel1.Visible = false;
-
             // 
             // BackButton
             // 
@@ -315,7 +314,7 @@
             // 
             this.PropComboBox.Location = new System.Drawing.Point(60, 95);
             this.PropComboBox.Name = "PropComboBox";
-            this.PropComboBox.Size = new System.Drawing.Size(115, 22);
+            this.PropComboBox.Size = new System.Drawing.Size(92, 22);
             this.PropComboBox.TabIndex = 53;
             this.PropComboBox.Visible = false;
             // 
@@ -329,12 +328,31 @@
             this.SetPropButton.Visible = false;
             this.SetPropButton.Click += new System.EventHandler(this.SetPropButton_Click);
             // 
+            // PropUnitText
+            // 
+            this.PropUnitText.Location = new System.Drawing.Point(157, 95);
+            this.PropUnitText.Name = "PropUnitText";
+            this.PropUnitText.Size = new System.Drawing.Size(80, 22);
+            this.PropUnitText.Visible = false;
+            // 
+            // linkLabel4
+            // 
+            this.linkLabel4.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Underline);
+            this.linkLabel4.Location = new System.Drawing.Point(197, 39);
+            this.linkLabel4.Name = "linkLabel4";
+            this.linkLabel4.Size = new System.Drawing.Size(43, 25);
+            this.linkLabel4.TabIndex = 63;
+            this.linkLabel4.Text = "Prop/";
+            this.linkLabel4.Visible = false;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(240, 268);
+            this.Controls.Add(this.linkLabel4);
+            this.Controls.Add(this.PropUnitText);
             this.Controls.Add(this.PropTextBox);
             this.Controls.Add(this.PropComboBox);
             this.Controls.Add(this.SetPropButton);
@@ -375,8 +393,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.MenuItem menuItem1;
         private System.Windows.Forms.MenuItem menuItem2;
-        private System.Windows.Forms.MenuItem menuItem3;
-        private System.Windows.Forms.MenuItem menuItem4;
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button1;
@@ -402,6 +418,10 @@
         private System.Windows.Forms.TextBox PropTextBox;
         private System.Windows.Forms.ComboBox PropComboBox;
         private System.Windows.Forms.Button SetPropButton;
+        private System.Windows.Forms.Label PropUnitText;
+        private System.Windows.Forms.LinkLabel linkLabel4;
+        public System.Windows.Forms.MenuItem addFavoriteMenu;
+        public System.Windows.Forms.MenuItem menuItem3;
 
     }
 }

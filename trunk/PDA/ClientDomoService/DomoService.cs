@@ -14,13 +14,89 @@
 public interface IDomoService
 {
     
-    string[] GetHouses();
+    string Echo();
     
-    string GetHouseDescription(int i);
+    bool Login(string Token, string Password);
     
-    int Set(int RefDevice, int RefProperty, string Value);
+    string[] GetHouses(string Token);
     
-    string Get(int RefDevice, int RefProperty);
+    string GetHouseDescription(string Token, int HouseId);
+    
+    int Set(string Token, int RefDevice, int RefProperty, string Value);
+    
+    string Get(string Token, int RefDevice, int RefProperty);
+}
+
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
+[System.Xml.Serialization.XmlRootAttribute(ElementName="Echo", Namespace="http://DomoMobile.com")]
+public partial class EchoRequest
+{
+    
+    public EchoRequest()
+    {
+    }
+}
+
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
+[System.Xml.Serialization.XmlRootAttribute(ElementName="EchoResponse", Namespace="http://DomoMobile.com")]
+public partial class EchoResponse
+{
+    
+    [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Namespace="http://DomoMobile.com", Order=0)]
+    public string EchoResult;
+    
+    public EchoResponse()
+    {
+    }
+    
+    public EchoResponse(string EchoResult)
+    {
+        this.EchoResult = EchoResult;
+    }
+}
+
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
+[System.Xml.Serialization.XmlRootAttribute(ElementName="Login", Namespace="http://DomoMobile.com")]
+public partial class LoginRequest
+{
+    
+    [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Namespace="http://DomoMobile.com", Order=0)]
+    public string Token;
+    
+    [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Namespace="http://DomoMobile.com", Order=1)]
+    public string Password;
+    
+    public LoginRequest()
+    {
+    }
+    
+    public LoginRequest(string Token, string Password)
+    {
+        this.Token = Token;
+        this.Password = Password;
+    }
+}
+
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
+[System.Xml.Serialization.XmlRootAttribute(ElementName="LoginResponse", Namespace="http://DomoMobile.com")]
+public partial class LoginResponse
+{
+    
+    [System.Xml.Serialization.XmlElementAttribute(Namespace="http://DomoMobile.com", Order=0)]
+    public bool LoginResult;
+    
+    public LoginResponse()
+    {
+    }
+    
+    public LoginResponse(bool LoginResult)
+    {
+        this.LoginResult = LoginResult;
+    }
 }
 
 [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -29,8 +105,16 @@ public interface IDomoService
 public partial class GetHousesRequest
 {
     
+    [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Namespace="http://DomoMobile.com", Order=0)]
+    public string Token;
+    
     public GetHousesRequest()
     {
+    }
+    
+    public GetHousesRequest(string Token)
+    {
+        this.Token = Token;
     }
 }
 
@@ -60,16 +144,20 @@ public partial class GetHousesResponse
 public partial class GetHouseDescriptionRequest
 {
     
-    [System.Xml.Serialization.XmlElementAttribute(Namespace="http://DomoMobile.com", Order=0)]
-    public int i;
+    [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Namespace="http://DomoMobile.com", Order=0)]
+    public string Token;
+    
+    [System.Xml.Serialization.XmlElementAttribute(Namespace="http://DomoMobile.com", Order=1)]
+    public int HouseId;
     
     public GetHouseDescriptionRequest()
     {
     }
     
-    public GetHouseDescriptionRequest(int i)
+    public GetHouseDescriptionRequest(string Token, int HouseId)
     {
-        this.i = i;
+        this.Token = Token;
+        this.HouseId = HouseId;
     }
 }
 
@@ -98,21 +186,25 @@ public partial class GetHouseDescriptionResponse
 public partial class SetRequest
 {
     
-    [System.Xml.Serialization.XmlElementAttribute(Namespace="http://DomoMobile.com", Order=0)]
-    public int RefDevice;
+    [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Namespace="http://DomoMobile.com", Order=0)]
+    public string Token;
     
     [System.Xml.Serialization.XmlElementAttribute(Namespace="http://DomoMobile.com", Order=1)]
+    public int RefDevice;
+    
+    [System.Xml.Serialization.XmlElementAttribute(Namespace="http://DomoMobile.com", Order=2)]
     public int RefProperty;
     
-    [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Namespace="http://DomoMobile.com", Order=2)]
+    [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Namespace="http://DomoMobile.com", Order=3)]
     public string Value;
     
     public SetRequest()
     {
     }
     
-    public SetRequest(int RefDevice, int RefProperty, string Value)
+    public SetRequest(string Token, int RefDevice, int RefProperty, string Value)
     {
+        this.Token = Token;
         this.RefDevice = RefDevice;
         this.RefProperty = RefProperty;
         this.Value = Value;
@@ -144,18 +236,22 @@ public partial class SetResponse
 public partial class GetRequest
 {
     
-    [System.Xml.Serialization.XmlElementAttribute(Namespace="http://DomoMobile.com", Order=0)]
-    public int RefDevice;
+    [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Namespace="http://DomoMobile.com", Order=0)]
+    public string Token;
     
     [System.Xml.Serialization.XmlElementAttribute(Namespace="http://DomoMobile.com", Order=1)]
+    public int RefDevice;
+    
+    [System.Xml.Serialization.XmlElementAttribute(Namespace="http://DomoMobile.com", Order=2)]
     public int RefProperty;
     
     public GetRequest()
     {
     }
     
-    public GetRequest(int RefDevice, int RefProperty)
+    public GetRequest(string Token, int RefDevice, int RefProperty)
     {
+        this.Token = Token;
         this.RefDevice = RefDevice;
         this.RefProperty = RefProperty;
     }
@@ -185,7 +281,7 @@ public partial class GetResponse
 public partial class DomoServiceClient : Microsoft.Tools.ServiceModel.CFClientBase<IDomoService>, IDomoService
 {
     
-    public static System.ServiceModel.EndpointAddress EndpointAddress = new System.ServiceModel.EndpointAddress("http://localhost:8000/DomoService/DomoService");
+    public static System.ServiceModel.EndpointAddress EndpointAddress = new System.ServiceModel.EndpointAddress("http://192.168.0.15:8000/DomoService/DomoService");
     
     public DomoServiceClient() : 
             this(CreateDefaultBinding(), EndpointAddress)
@@ -196,6 +292,42 @@ public partial class DomoServiceClient : Microsoft.Tools.ServiceModel.CFClientBa
             base(binding, remoteAddress)
     {
         addProtectionRequirements(binding);
+    }
+    
+    private EchoResponse Echo(EchoRequest request)
+    {
+        CFInvokeInfo info = new CFInvokeInfo();
+        info.Action = "http://DomoMobile.com/IDomoService/Echo";
+        info.RequestIsWrapped = true;
+        info.ReplyAction = "http://DomoMobile.com/IDomoService/EchoResponse";
+        info.ResponseIsWrapped = true;
+        EchoResponse retVal = base.Invoke<EchoRequest, EchoResponse>(info, request);
+        return retVal;
+    }
+    
+    public string Echo()
+    {
+        EchoRequest request = new EchoRequest();
+        EchoResponse response = this.Echo(request);
+        return response.EchoResult;
+    }
+    
+    private LoginResponse Login(LoginRequest request)
+    {
+        CFInvokeInfo info = new CFInvokeInfo();
+        info.Action = "http://DomoMobile.com/IDomoService/Login";
+        info.RequestIsWrapped = true;
+        info.ReplyAction = "http://DomoMobile.com/IDomoService/LoginResponse";
+        info.ResponseIsWrapped = true;
+        LoginResponse retVal = base.Invoke<LoginRequest, LoginResponse>(info, request);
+        return retVal;
+    }
+    
+    public bool Login(string Token, string Password)
+    {
+        LoginRequest request = new LoginRequest(Token, Password);
+        LoginResponse response = this.Login(request);
+        return response.LoginResult;
     }
     
     private GetHousesResponse GetHouses(GetHousesRequest request)
@@ -209,9 +341,9 @@ public partial class DomoServiceClient : Microsoft.Tools.ServiceModel.CFClientBa
         return retVal;
     }
     
-    public string[] GetHouses()
+    public string[] GetHouses(string Token)
     {
-        GetHousesRequest request = new GetHousesRequest();
+        GetHousesRequest request = new GetHousesRequest(Token);
         GetHousesResponse response = this.GetHouses(request);
         return response.GetHousesResult;
     }
@@ -227,9 +359,9 @@ public partial class DomoServiceClient : Microsoft.Tools.ServiceModel.CFClientBa
         return retVal;
     }
     
-    public string GetHouseDescription(int i)
+    public string GetHouseDescription(string Token, int HouseId)
     {
-        GetHouseDescriptionRequest request = new GetHouseDescriptionRequest(i);
+        GetHouseDescriptionRequest request = new GetHouseDescriptionRequest(Token, HouseId);
         GetHouseDescriptionResponse response = this.GetHouseDescription(request);
         return response.GetHouseDescriptionResult;
     }
@@ -245,9 +377,9 @@ public partial class DomoServiceClient : Microsoft.Tools.ServiceModel.CFClientBa
         return retVal;
     }
     
-    public int Set(int RefDevice, int RefProperty, string Value)
+    public int Set(string Token, int RefDevice, int RefProperty, string Value)
     {
-        SetRequest request = new SetRequest(RefDevice, RefProperty, Value);
+        SetRequest request = new SetRequest(Token, RefDevice, RefProperty, Value);
         SetResponse response = this.Set(request);
         return response.SetResult;
     }
@@ -263,9 +395,9 @@ public partial class DomoServiceClient : Microsoft.Tools.ServiceModel.CFClientBa
         return retVal;
     }
     
-    public string Get(int RefDevice, int RefProperty)
+    public string Get(string Token, int RefDevice, int RefProperty)
     {
-        GetRequest request = new GetRequest(RefDevice, RefProperty);
+        GetRequest request = new GetRequest(Token, RefDevice, RefProperty);
         GetResponse response = this.Get(request);
         return response.GetResult;
     }
@@ -285,6 +417,10 @@ public partial class DomoServiceClient : Microsoft.Tools.ServiceModel.CFClientBa
             return;
         }
         System.ServiceModel.Security.ChannelProtectionRequirements cpr = new System.ServiceModel.Security.ChannelProtectionRequirements();
+        ApplyProtection("http://DomoMobile.com/IDomoService/Echo", cpr.IncomingSignatureParts, true);
+        ApplyProtection("http://DomoMobile.com/IDomoService/Echo", cpr.IncomingEncryptionParts, true);
+        ApplyProtection("http://DomoMobile.com/IDomoService/Login", cpr.IncomingSignatureParts, true);
+        ApplyProtection("http://DomoMobile.com/IDomoService/Login", cpr.IncomingEncryptionParts, true);
         ApplyProtection("http://DomoMobile.com/IDomoService/GetHouses", cpr.IncomingSignatureParts, true);
         ApplyProtection("http://DomoMobile.com/IDomoService/GetHouses", cpr.IncomingEncryptionParts, true);
         ApplyProtection("http://DomoMobile.com/IDomoService/GetHouseDescription", cpr.IncomingSignatureParts, true);
@@ -300,6 +436,10 @@ public partial class DomoServiceClient : Microsoft.Tools.ServiceModel.CFClientBa
         }
         else
         {
+            ApplyProtection("http://DomoMobile.com/IDomoService/EchoResponse", cpr.OutgoingSignatureParts, true);
+            ApplyProtection("http://DomoMobile.com/IDomoService/EchoResponse", cpr.OutgoingEncryptionParts, true);
+            ApplyProtection("http://DomoMobile.com/IDomoService/LoginResponse", cpr.OutgoingSignatureParts, true);
+            ApplyProtection("http://DomoMobile.com/IDomoService/LoginResponse", cpr.OutgoingEncryptionParts, true);
             ApplyProtection("http://DomoMobile.com/IDomoService/GetHousesResponse", cpr.OutgoingSignatureParts, true);
             ApplyProtection("http://DomoMobile.com/IDomoService/GetHousesResponse", cpr.OutgoingEncryptionParts, true);
             ApplyProtection("http://DomoMobile.com/IDomoService/GetHouseDescriptionResponse", cpr.OutgoingSignatureParts, true);
