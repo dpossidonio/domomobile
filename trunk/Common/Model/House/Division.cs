@@ -5,7 +5,6 @@ using System.Text;
 
 namespace DomoMobile.Common
 {
-
     public class Division
     {
         public Division()
