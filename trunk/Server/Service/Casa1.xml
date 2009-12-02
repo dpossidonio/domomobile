@@ -63,7 +63,7 @@
       <ValueConversion Type="FORMULA" Ref="1" />
     </ScalarValueType>
 
-    <ScalarValueType ID="3" Name="Temperatura (0-50)"  NumBits="8" MinValue="0" MaxValue="50" Step="2" Units="Percentagem">
+    <ScalarValueType ID="3" Name="Temperatura (0-50)"  NumBits="8" MinValue="0" MaxValue="50" Step="2" Units="Graus">
       <ValueConversion Type="NONE" Ref="" />
     </ScalarValueType>
   </ScalarValueTypeList>
@@ -98,7 +98,7 @@
   <DeviceTypeList>
     <DeviceType ID="1" Name="Lâmpada-Regulada">
       <PropertyTypeList>
-        <PropertyType ID="1" Name="On-Off" AccessMode="RW" ValueType="ENUM" RefValueType="1" />
+        <PropertyType ID="1" Name="EstadoLigadoDesligado" AccessMode="RW" ValueType="ENUM" RefValueType="1" />
         <PropertyType ID="2" Name="Intensidade" AccessMode="RW" ValueType="SCALAR" RefValueType="1" />
       </PropertyTypeList>
     </DeviceType>

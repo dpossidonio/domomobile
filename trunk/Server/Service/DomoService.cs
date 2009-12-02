@@ -8,18 +8,34 @@ namespace Service
     {
         #region IDomoService Members
 
-        public string[] GetHouses()
+        public string Echo() {
+            Console.WriteLine("Echo");
+            return "Echo";
+        }
+
+        public bool Login(string Token, string Password) {
+            Console.WriteLine("Login: "+Token);
+            //foreach (var item in Myhouse.Users)
+            //{
+            //    if (item.Username.ToString().Equals(Token) && item.Password.ToString().Equals(Password))
+            //    return true;            
+            //}
+            //return false;
+            return true;
+        }
+
+        public string[] GetHouses(string Token)
         {
             //See available houses
             Console.WriteLine("GetHouses : Casa de Campo, Apartamento Las Vegas, Casa Lisboa");
             return new string[] { "Casa de Campo"};
         }
 
-        public string GetHouseDescription(int id)
+        public string GetHouseDescription(string Token,int HouseId)
         {
-            Console.WriteLine("GetHouseDescription : vou enviar descrição da casa com id:"+id);
+            Console.WriteLine("GetHouseDescription : vou enviar descrição da casa com id:" + HouseId);
             string oldname = "";
-            switch (id)
+            switch (HouseId)
             {
                 case 0: oldname = "Casa1.xml"; break;
                 case 1: oldname = "Casa2.xml"; break;
@@ -34,13 +50,13 @@ namespace Service
             return text;
         }
 
-        public int Set(int RefDevice, int RefProperty, string Value)
+        public int Set(string Token,int RefDevice, int RefProperty, string Value)
         {
             Console.WriteLine("SET : Foi Alterada a propriedade:"+RefProperty+" do Device:"+RefDevice+" para o valor #"+Value);
             return 1;
         }
 
-        public string Get(int RefDevice, int RefProperty)
+        public string Get(string Token,int RefDevice, int RefProperty)
         {
             Console.WriteLine("GET : Foi lida a propriedade:" + RefProperty + " do Device:" + RefDevice);
             
