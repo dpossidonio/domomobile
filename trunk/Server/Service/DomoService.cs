@@ -6,7 +6,10 @@ namespace Service
 {
     partial class DomoService : IDomoService
     {
-        
+        string Name = "";
+        public DomoService()
+        {
+        }
         #region IDomoService Members
 
         public string Echo() {
@@ -22,6 +25,8 @@ namespace Service
             //    return true;            
             //}
             //return false;
+
+            Name = Token;
             return true;
         }
 

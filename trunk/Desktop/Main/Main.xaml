@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Main.Window1"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="Window1" Height="300" Width="300">
+    Title="Domo Mobile" MinHeight="300" MinWidth="300">
     
     <Window.Resources>
         <ResourceDictionary>
@@ -11,7 +11,10 @@
         </ResourceDictionary>
     </Window.Resources>
     
-    <StackPanel>
-        <ContentControl Content="{Binding Content}"/>
-    </StackPanel>
+    <DockPanel LastChildFill="True">
+        <TextBlock DockPanel.Dock="Top">Domo Mobile</TextBlock>
+        <StackPanel>
+            <ContentControl Content="{Binding WindowContent}"/>
+        </StackPanel>
+    </DockPanel>
 </Window>
