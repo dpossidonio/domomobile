@@ -281,7 +281,7 @@ public partial class GetResponse
 public partial class DomoServiceClient : Microsoft.Tools.ServiceModel.CFClientBase<IDomoService>, IDomoService
 {
     
-    public static System.ServiceModel.EndpointAddress EndpointAddress = new System.ServiceModel.EndpointAddress("http://192.168.0.15:8000/DomoService/DomoService");
+    public static System.ServiceModel.EndpointAddress EndpointAddress = new System.ServiceModel.EndpointAddress("http://localhost:8000/DomoService/DomoService");
     
     public DomoServiceClient() : 
             this(CreateDefaultBinding(), EndpointAddress)
