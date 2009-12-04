@@ -45,7 +45,7 @@ namespace Service
             catch (CommunicationException e)
             {
                 localhost.Abort();
-                Console.WriteLine("Erro");
+                Console.WriteLine("Erro "+e.ToString());
             }
         }
 

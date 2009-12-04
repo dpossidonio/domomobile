@@ -2,24 +2,60 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:vm="clr-namespace:Main.ViewModels">
 
-    <!--<Style TargetType="{x:Type Button}" x:Key="ButtonStyle">
+    <Style TargetType="{x:Type Button}" x:Key="ButtonStyle">
         <Setter Property="Height" Value="50" />
         <Setter Property="FontSize" Value="24" />
-    </Style>-->
+    </Style>
     
     <DataTemplate DataType="{x:Type vm:SelectScreenViewModel}">
         <StackPanel>
-            <TextBlock>Isto é o SelectScreen</TextBlock>
+            <Button 
+                Content="Topo" 
+                Command="{Binding GoUpCommand}" 
+                Background="BlanchedAlmond" 
+                Style="{StaticResource ButtonStyle}"/>
+            <ItemsControl ItemsSource="{Binding Items}" />
         </StackPanel>
     </DataTemplate>
     
-    <!--<DataTemplate DataType="{x:Type vm:HouseSelectionItem}">
+    <DataTemplate DataType="{x:Type vm:HouseSelectionItem}">
         <Button 
             Content="{Binding House.Name}" 
             Command="{Binding ActionCommand}" 
             Background="BlanchedAlmond" 
             Style="{StaticResource ButtonStyle}"/>
-    </DataTemplate>-->
-    
-    
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:FloorSelectionItem}">
+        <Button 
+            Content="{Binding Floor.Name}" 
+            Command="{Binding ActionCommand}" 
+            Background="BlanchedAlmond" 
+            Style="{StaticResource ButtonStyle}"/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:DivisionSelectionItem}">
+        <Button 
+            Content="{Binding Division.Name}" 
+            Command="{Binding ActionCommand}" 
+            Background="BlanchedAlmond" 
+            Style="{StaticResource ButtonStyle}"/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:DeviceSelectionItem}">
+        <Button 
+            Content="{Binding Device.Name}" 
+            Command="{Binding ActionCommand}" 
+            Background="BlanchedAlmond" 
+            Style="{StaticResource ButtonStyle}"/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:PropertySelectionItem}">
+        <Button 
+            Content="{Binding Property.Type.Name}" 
+            Command="{Binding ActionCommand}" 
+            Background="BlanchedAlmond" 
+            Style="{StaticResource ButtonStyle}"/>
+    </DataTemplate>
+
 </ResourceDictionary>

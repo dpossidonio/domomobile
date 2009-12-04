@@ -10,14 +10,12 @@ namespace DomoMobile.Common
     {
         public int ID { get; set; }
         public string Name { get; set; }
-
     }
 
     public class ScalarValueType : PropertyValueType
     {
         public Scalar TypeOfValue { get; set; }
     }
-
 
     public class EnumeratedValueType : PropertyValueType
     {
@@ -28,9 +26,6 @@ namespace DomoMobile.Common
     {
         public Vector TypeOfValue { get; set; }
     }
-
-    
-
 
     public class Scalar
     {
@@ -44,7 +39,6 @@ namespace DomoMobile.Common
 
     public class Vector
     {
-        
         public int Size { get; set; }
         public Conversion Expressions { get; set; }
     }
@@ -63,7 +57,6 @@ namespace DomoMobile.Common
         public int ID { get; set; }
         public string Name { get; set; }
         public int DecimalPlaces { get; set; }
-
     }
 
     public class ConversionObject : Conversion
@@ -71,7 +64,6 @@ namespace DomoMobile.Common
         public string UserToSystemObj { get; set; }
         public string SystemToUserObj { get; set; }
     }
-
 
     public class ConversionFormula : Conversion
     {

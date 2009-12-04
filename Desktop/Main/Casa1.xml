@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<HomeDescription>
+  <!-- HOUSE DEFINITION #############################-->
+  <House ID="1" Name="Vivenda ist" Address="Av. Prof. Dr. Cavaco Silva" Phone="214233200">
+    <FloorList>
+      <Floor ID="1" Name="Cave" HeightOrder="-1">
+        <DivisionList>
+          <Division ID="1" Name="Cave" AccessLevel="1" />
+        </DivisionList>
+      </Floor>
+      <Floor ID="2" Name="R/C" HeightOrder="0">
+        <DivisionList>
+          <Division ID="2" Name="Cozinha" AccessLevel="3" />
+          <Division ID="3" Name="Sala" AccessLevel="2" />
+          <Division ID="4" Name="Hall" AccessLevel="2" />
+        </DivisionList>
+      </Floor>
+      <Floor ID="3" Name="Sótão" HeightOrder="1">
+        <DivisionList>
+          <Division ID="5" Name="Sótão" AccessLevel="2" />
+        </DivisionList>
+      </Floor>
+    </FloorList>
+  </House>
+
+
+  <!-- ACCESS LEVEL DEFINITION ####################################-->
+  <AccessLevelList>
+    <AccessLevel Level="0" Name="Free Access" />
+    <AccessLevel Level="1" Name="Guest" />
+    <AccessLevel Level="2" Name="Common User - Child" />
+    <AccessLevel Level="3" Name="Common User - Parent" />
+    <AccessLevel Level="10" Name="Administrator" />
+  </AccessLevelList>
+
+  <UserList>
+    <User ID="1" Name="David" Password="123" AccessLevel="2" />
+    <User ID="2" Name="Jules" Password="123" AccessLevel="10" />
+  </UserList>
+
+  <!-- PROPERTY TYPES DEFINITION ############################-->
+  
+  <!-- Conversion Formula-->
+  
+  <ConversionFormulaList>
+    <ConversionFormula ID="1" Name="Converte para dobro" UserToSystem="2*X" SystemToUser="X/2" DecimalPlaces="0" />
+    <ConversionFormula ID="2" Name="10*X+200" UserToSystem="10*X+200" SystemToUser="(X-200)/10" DecimalPlaces="1" />
+     valor real varia entre -20.0 e 60.0. O valor 23.4 é representado por 434 
+  </ConversionFormulaList>
+  <ConversionObjectList>
+    <ConversionObject ID="1" Name="Intensidade - lux" UserToSystemObj="1" SystemToUserObj="2" DecimalPlaces="2" />
+  </ConversionObjectList>
+  
+  
+  
+  <!-- SCALAR -->
+  <ScalarValueTypeList>
+    <ScalarValueType ID="1" Name="Percentagem (0-100)"  NumBits="8" MinValue="0" MaxValue="100" Step="1" Units="Percentagem">
+      <ValueConversion Type="ffg" Ref="1" />
+    </ScalarValueType>
+
+    <ScalarValueType ID="2" Name="Potência" NumBits="16" MinValue="0" MaxValue="800" Step="10" Units="Watt">
+      <ValueConversion Type="FORMULA" Ref="1" />
+    </ScalarValueType>
+  </ScalarValueTypeList>
+
+
+  <!-- ENUM -->
+  <EnumValueTypeList>
+    <EnumValueType ID="1" Name="EstadoLigadoDesligado">
+      <Enumerated Value="0" Description="EstadoDesligado" />
+      <Enumerated Value="1" Description="EstadoLigado"/>
+    </EnumValueType>
+    <EnumValueType ID="2" Name="Comando Ar Condicionado">
+      <Enumerated Description="Desligado" Value="0"/>
+      <Enumerated Description="Aquecer" Value="1"/>
+      <Enumerated Description="Arrefecer" Value="2"/>
+    </EnumValueType>
+  </EnumValueTypeList>
+
+  <!-- ARRAY -->
+  <ArrayValueTypeList>
+    <ArrayValueType ID="1" Name="Nome Empresa" MaxLen="10">
+      <ValueConversion Type="NONE" Ref="" />
+    </ArrayValueType>
+    <ArrayValueType ID="2" Name="Float IEEE" MaxLen="8">
+      <ValueConversion Type="OBJECT" Ref="1" />
+    </ArrayValueType>
+  </ArrayValueTypeList>
+
+
+  <!-- DEVICE TYPES DEFINITION ########################-->
+
+  <DeviceTypeList>
+    <DeviceType ID="1" Name="Lâmpada-Regulada">
+      <PropertyTypeList>
+        <PropertyType ID="1" Name="On-Off" AccessMode="RW" ValueType="ENUM" RefValueType="1" />
+        <PropertyType ID="2" Name="Intensidade" AccessMode="RW" ValueType="SCALAR" RefValueType="1" />
+      </PropertyTypeList>
+    </DeviceType>
+
+    <DeviceType ID="2" Name="Sensor-Temperatura">
+      <PropertyTypeList>
+        <PropertyType ID="2" Name="Temperatura" AccessMode="RO" ValueType="SCALAR" RefValueType="1" />
+      </PropertyTypeList>
+    </DeviceType>
+  </DeviceTypeList>
+
+  <!-- SERVICE DEFINITION #############################-->
+
+  <ServiceList>
+    <Service ID="1" Name="Aquecimento"/>
+    <Service ID="2" Name="Iluminação"/>
+    <Service ID="3" Name="Alarme"/>
+    <Service ID="4" Name="Tomadas"/>
+    <Service ID="5" Name="Irrigação"/>
+  </ServiceList>
+
+
+   <!--DEVICE DEFINITION #############################-->
+  <DeviceList>
+    <Device ID="1" RefDeviceType="1" Name="Candeeiro-Mesa" Address="#0100" RefDivision="2" AccessLevel="3,5" UserBlocked="-,27">
+      <DeviceServiceList>
+        <DeviceService RefService="1" />
+        <DeviceService RefService="4" />
+      </DeviceServiceList>
+    </Device>
+  </DeviceList>  
+  
+</HomeDescription>
+
+

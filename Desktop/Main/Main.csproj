@@ -71,6 +71,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="PropertyTypePopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\EnumPropertyTypeUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ScalarPropertyTypeUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\VectorPropertyTypeUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -81,8 +97,20 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseViewModel.cs" />
-    <Compile Include="DelegateCommand.cs" />
+    <Compile Include="PropertyTypePopup.xaml.cs">
+      <DependentUpon>PropertyTypePopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\EnumPropertyTypeUserControl.xaml.cs">
+      <DependentUpon>EnumPropertyTypeUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ScalarPropertyTypeUserControl.xaml.cs">
+      <DependentUpon>ScalarPropertyTypeUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\VectorPropertyTypeUserControl.xaml.cs">
+      <DependentUpon>VectorPropertyTypeUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="Utils\DelegateCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -102,6 +130,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="ClassDiagram1.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -113,6 +142,15 @@
       <Project>{ED15D343-2308-42C3-AC34-EED994774040}</Project>
       <Name>Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\XMLParser\XMLParser.csproj">
+      <Project>{F089C260-6BFA-48B3-8BBB-1F4B5F610829}</Project>
+      <Name>XMLParser</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Casa1.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

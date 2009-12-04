@@ -13,6 +13,11 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.ComponentModel;
 using Main.ViewModels;
+using PDA;
+using System.Xml.Linq;
+using DomoMobile.Common;
+using System.Collections.ObjectModel;
+using System.IO;
 
 namespace Main
 {
@@ -40,9 +45,27 @@ namespace Main
         {
             base.OnInitialized(e);
 
-            Content = new SelectScreenViewModel();
+            var house = ReadHouseConfiguration("Casa1.xml");
+            var selectScreen = new SelectScreenViewModel();
+            selectScreen.Items = new ObservableCollection<SelectionItem>();
+            selectScreen.SetContent(
+                new List<SelectionItem>() { 
+                    new HouseSelectionItem(null) { 
+                        House = house 
+                    }  
+                }, null);
+
+            WindowContent = selectScreen;
         }
 
+        private House ReadHouseConfiguration(string filename)
+        {
+            Parser p = new Parser();
+            //string path = p.GetXmlFilePath(filename);
+            FileInfo f = new FileInfo(filename);
+            var doc = XDocument.Load(f.FullName);
+            return p.getHouse(doc);
+        }
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;

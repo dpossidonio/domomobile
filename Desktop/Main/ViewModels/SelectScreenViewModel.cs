@@ -5,54 +5,82 @@ using System.Text;
 using System.Collections.ObjectModel;
 using DomoMobile.Common;
 using System.Windows.Input;
+using System.Windows.Controls;
+using Main.UserControls;
 
 namespace Main.ViewModels
 {
     public class SelectScreenViewModel : BaseViewModel
     {
+        public SelectScreenViewModel()
+        {
+            var goUpAction = new DelegateCommand(new Action(delegate()
+            {
+                if (CurrentItem == null || CurrentItem.Parent == null) return;
+                SetContent(CurrentItem.Parent.getChildren(), CurrentItem.Parent);
+            }));
+            GoUpCommand = goUpAction;
+        }
+
+        private SelectionItem CurrentItem { get; set; }
+
+        private ICommand _goUpComamnd;
+        public ICommand GoUpCommand
+        {
+            get { return _goUpComamnd; }
+            set { _goUpComamnd = value; Notify("GoUpCommand"); }
+        }
+
         private string _title;
         public string Title
         {
-            get
+            get { return _title; }
+            set { _title = value; Notify("Title"); }
+        }
+
+        private ObservableCollection<SelectionItem> _items;
+        public ObservableCollection<SelectionItem> Items
+        {
+            get { return _items; }
+            set { _items = value; Notify("Items"); }
+        }
+
+        public void SetContent(IEnumerable<SelectionItem> items, AggregatorSelectionItems parent)
+        {
+            CurrentItem = parent;
+
+            foreach (var item in Items)
             {
-                return _title;
+                var i = item as AggregatorSelectionItems;
+                if (i != null)
+                {
+                    i.ItemClicked -= i_ItemClicked;
+                }
             }
-            set
+
+            Items.Clear();
+
+            foreach (var item in items)
             {
-                _title = value;
-                Notify("Title");
+                Items.Add(item);
+
+                var i = item as AggregatorSelectionItems;
+                if (i != null)
+                {
+                    i.ItemClicked += new Action<IEnumerable<SelectionItem>, AggregatorSelectionItems>(i_ItemClicked);
+                }
             }
         }
 
-        private ObservableCollection<object> _items;
-        public ObservableCollection<object> Items
+        void i_ItemClicked(IEnumerable<SelectionItem> obj, AggregatorSelectionItems parent)
         {
-            get
-            {
-                return _items;
-            }
-            set
-            {
-                _items = value;
-                Notify("Items");
-            }
+            SetContent(obj, parent);
         }
     }
 
     public abstract class SelectionItem : BaseViewModel
     {
-
-    }
-
-    public abstract class AggregatorSelectionItems : SelectionItem
-    {
-        public event Action<IEnumerable<SelectionItem>> ItemClicked;
-
-        private void NotifyItemClicked(IEnumerable<SelectionItem> items)
-        {
-            if (ItemClicked != null)
-                ItemClicked(items);
-        }
+        public AggregatorSelectionItems Parent { get; set; }
 
         private ICommand _actionCommand;
         public ICommand ActionCommand
@@ -61,43 +89,55 @@ namespace Main.ViewModels
             set { _actionCommand = value; Notify("ActionCommand"); }
         }
 
-        public AggregatorSelectionItems()
+        public SelectionItem(AggregatorSelectionItems parent)
+        {
+            Parent = parent;
+        }
+    }
+
+    public abstract class AggregatorSelectionItems : SelectionItem
+    {
+        public event Action<IEnumerable<SelectionItem>, AggregatorSelectionItems> ItemClicked;
+
+        private void NotifyItemClicked(IEnumerable<SelectionItem> items, AggregatorSelectionItems parent)
+        {
+            if (ItemClicked != null)
+                ItemClicked(items, parent);
+        }
+
+        public AggregatorSelectionItems(AggregatorSelectionItems parent)
+            : base(parent)
         {
             var call = new Action(delegate()
             {
                 var children = getChildren();
-                NotifyItemClicked(children);
+                NotifyItemClicked(children, this);
             });
             ActionCommand = new DelegateCommand(call);
 
         }
-        protected abstract IEnumerable<SelectionItem> getChildren();
+
+        public abstract IEnumerable<SelectionItem> getChildren();
     }
 
     public class HouseSelectionItem : AggregatorSelectionItems
     {
-        public HouseSelectionItem() { }
+        public HouseSelectionItem(AggregatorSelectionItems parent)
+            : base(parent) { }
 
         private House _house;
         public House House
         {
-            get
-            {
-                return _house;
-            }
-            set
-            {
-                _house = value;
-                Notify("House");
-            }
+            get { return _house; }
+            set { _house = value; Notify("House"); }
         }
 
-        protected override IEnumerable<SelectionItem> getChildren()
+        public override IEnumerable<SelectionItem> getChildren()
         {
             IList<SelectionItem> items = new List<SelectionItem>();
             foreach (var floor in House.Floors)
             {
-                items.Add(new FloorSelectionItem(floor));
+                items.Add(new FloorSelectionItem(floor, this));
             }
             return items;
         }
@@ -105,19 +145,20 @@ namespace Main.ViewModels
 
     public class FloorSelectionItem : AggregatorSelectionItems
     {
-        public FloorSelectionItem(Floor floor)
+        public FloorSelectionItem(Floor floor, AggregatorSelectionItems parent)
+            : base(parent)
         {
             Floor = floor;
         }
 
         public Floor Floor { get; private set; }
 
-        protected override IEnumerable<SelectionItem> getChildren()
+        public override IEnumerable<SelectionItem> getChildren()
         {
             IList<SelectionItem> items = new List<SelectionItem>();
             foreach (var division in Floor.Divisions)
             {
-                items.Add(new DivisionSelectionItem(division));
+                items.Add(new DivisionSelectionItem(division, this));
             }
             return items;
         }
@@ -125,19 +166,20 @@ namespace Main.ViewModels
 
     public class DivisionSelectionItem : AggregatorSelectionItems
     {
-        public DivisionSelectionItem(Division division)
+        public DivisionSelectionItem(Division division, AggregatorSelectionItems parent)
+            : base(parent)
         {
             Division = division;
         }
 
         public Division Division { get; private set; }
 
-        protected override IEnumerable<SelectionItem> getChildren()
+        public override IEnumerable<SelectionItem> getChildren()
         {
             IList<SelectionItem> items = new List<SelectionItem>();
             foreach (var device in Division.Devices)
             {
-                items.Add(new DeviceSelectionItem(device));
+                items.Add(new DeviceSelectionItem(device, this));
             }
             return items;
         }
@@ -145,19 +187,20 @@ namespace Main.ViewModels
 
     public class DeviceSelectionItem : AggregatorSelectionItems
     {
-        public DeviceSelectionItem(Device device)
+        public DeviceSelectionItem(Device device, AggregatorSelectionItems parent)
+            : base(parent)
         {
             Device = device;
         }
 
         public Device Device { get; private set; }
 
-        protected override IEnumerable<SelectionItem> getChildren()
+        public override IEnumerable<SelectionItem> getChildren()
         {
             IList<SelectionItem> items = new List<SelectionItem>();
             foreach (var property in Device.Properties)
             {
-                items.Add(new PropertySelectionItem(property));
+                items.Add(new PropertySelectionItem(property, this));
             }
             return items;
         }
@@ -165,10 +208,41 @@ namespace Main.ViewModels
 
     public class PropertySelectionItem : SelectionItem
     {
-        public PropertySelectionItem(Property property)
+        public PropertySelectionItem(Property property, AggregatorSelectionItems parent)
+            : base(parent)
         {
             Property = property;
+
+            var action = new DelegateCommand(new Action(delegate()
+            {
+                var window = new PropertyTypePopup(PropertyTypeUserControlFactory.GetUserControl(Property));
+                window.Show();
+            }));
+            ActionCommand = action;
         }
         public Property Property { get; private set; }
+    }
+
+    public static class PropertyTypeUserControlFactory
+    {
+        public static UserControl GetUserControl(Property prop)
+        {
+            if (prop.Type.TypeOfValue == PropertyType.TypeOfValues.ENUM)
+            {
+                return new EnumPropertyTypeUserControl(prop);
+            }
+            else if (prop.Type.TypeOfValue == PropertyType.TypeOfValues.SCALAR)
+            {
+                return new ScalarPropertyTypeUserControl(prop);
+            }
+            else if (prop.Type.TypeOfValue == PropertyType.TypeOfValues.VECTOR)
+            {
+                return new VectorPropertyTypeUserControl(prop);
+            }
+            else
+            {
+                throw new Exception("PropertyTypeNotSuported by PropertyTypeUserControlFactory");
+            }
+        }
     }
 }
