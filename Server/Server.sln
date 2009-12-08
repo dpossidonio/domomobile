@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "Service\Service.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestService", "TestService\TestService.csproj", "{BDA63C0F-5A19-4112-A01D-90A72BF08CA5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XMLStateParser", "XMLStateParser\XMLStateParser.csproj", "{F089C260-6BFA-48B3-8BBB-1F4B5F610829}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{BDA63C0F-5A19-4112-A01D-90A72BF08CA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDA63C0F-5A19-4112-A01D-90A72BF08CA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDA63C0F-5A19-4112-A01D-90A72BF08CA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F089C260-6BFA-48B3-8BBB-1F4B5F610829}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F089C260-6BFA-48B3-8BBB-1F4B5F610829}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F089C260-6BFA-48B3-8BBB-1F4B5F610829}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F089C260-6BFA-48B3-8BBB-1F4B5F610829}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
