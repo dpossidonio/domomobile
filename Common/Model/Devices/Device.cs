@@ -50,7 +50,10 @@ namespace DomoMobile.Common
         public Device()
         {
             Properties = new List<Property>();
+            MonitorizationAcessLevel = 0;
+            CommandAcessLevel = 0;
         }
+
         public override string ToString()
         {
             return Name;
