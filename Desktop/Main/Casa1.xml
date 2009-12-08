@@ -44,11 +44,14 @@
   
   <ConversionFormulaList>
     <ConversionFormula ID="1" Name="Converte para dobro" UserToSystem="2*X" SystemToUser="X/2" DecimalPlaces="0" />
-    <ConversionFormula ID="2" Name="10*X+200" UserToSystem="10*X+200" SystemToUser="(X-200)/10" DecimalPlaces="1" />
-     valor real varia entre -20.0 e 60.0. O valor 23.4 é representado por 434 
+    <ConversionFormula ID="2" Name="Minutos em segundos" UserToSystem="X*60" SystemToUser="X/60" DecimalPlaces="0" />
+    <ConversionFormula ID="3" Name="Horas em segundos" UserToSystem="X*3600" SystemToUser="X/3600" DecimalPlaces="0" />
+    <ConversionFormula ID="4" Name="Dias em segundos" UserToSystem="24*(X*3600)" SystemToUser="24*(X/3600)" DecimalPlaces="0" />
+    <ConversionFormula ID="5" Name="10*X+200" UserToSystem="10*X+200" SystemToUser="(X-200)/10" DecimalPlaces="0" />
+    <!-- valor real varia entre -20.0 e 60.0. O valor 23.4 é representado por 434 -->
   </ConversionFormulaList>
   <ConversionObjectList>
-    <ConversionObject ID="1" Name="Intensidade - lux" UserToSystemObj="1" SystemToUserObj="2" DecimalPlaces="2" />
+    <ConversionObject ID="1" Name="Intensidade - luz" UserToSystemObj="1" SystemToUserObj="2" DecimalPlaces="2" />
   </ConversionObjectList>
   
   
@@ -62,6 +65,31 @@
     <ScalarValueType ID="2" Name="Potência" NumBits="16" MinValue="0" MaxValue="800" Step="10" Units="Watt">
       <ValueConversion Type="FORMULA" Ref="1" />
     </ScalarValueType>
+
+    <ScalarValueType ID="3" Name="Temperatura (0-50)"  NumBits="8" MinValue="0" MaxValue="50" Step="2" Units="Graus">
+      <ValueConversion Type="NONE" Ref="" />
+    </ScalarValueType>
+    
+    <ScalarValueType ID="4" Name="Canal (1-250)"  NumBits="8" MinValue="0" MaxValue="250" Step="1" Units="Canal">
+      <ValueConversion Type="NONE" Ref="" />
+    </ScalarValueType>
+
+    <ScalarValueType ID="5" Name="Horas"  NumBits="8" MinValue="0" MaxValue="24" Step="1" Units="Horas">
+      <ValueConversion Type="FORMULA" Ref="3" />
+    </ScalarValueType>
+
+    <ScalarValueType ID="6" Name="Minutos"  NumBits="8" MinValue="0" MaxValue="60" Step="1" Units="Horas">
+      <ValueConversion Type="FORMULA" Ref="2" />
+    </ScalarValueType>
+
+    <ScalarValueType ID="7" Name="Dias"  NumBits="16" MinValue="0" MaxValue="365" Step="1" Units="Horas">
+      <ValueConversion Type="FORMULA" Ref="4" />
+    </ScalarValueType>
+
+    <ScalarValueType ID="8" Name="Volume"  NumBits="8" MinValue="0" MaxValue="30" Step="1" Units="Intensidade">
+      <ValueConversion Type="NONE" Ref="" />
+    </ScalarValueType>
+    
   </ScalarValueTypeList>
 
 
@@ -76,17 +104,47 @@
       <Enumerated Description="Aquecer" Value="1"/>
       <Enumerated Description="Arrefecer" Value="2"/>
     </EnumValueType>
+    <EnumValueType ID="3" Name="Canal TV">
+      <Enumerated Description="RTP" Value="1"/>
+      <Enumerated Description="RTP2" Value="2"/>
+      <Enumerated Description="SIC" Value="3"/>
+      <Enumerated Description="TVI" Value="4"/>
+    </EnumValueType>
+    <EnumValueType ID="4" Name="Programa MQ Lavar">
+      <Enumerated Description="Rapido" Value="0"/>
+      <Enumerated Description="Economico" Value="1"/>
+      <Enumerated Description="Delicado" Value="2"/>
+      <Enumerated Description="Pré-Lavagem" Value="4"/>
+    </EnumValueType>
+    <EnumValueType ID="5" Name="Graus MQ Lavar">
+      <Enumerated Description="30" Value="1"/>
+      <Enumerated Description="60" Value="2"/>
+      <Enumerated Description="95" Value="3"/>
+    </EnumValueType>
+    <EnumValueType ID="6" Name="EstadoOperação">
+      <Enumerated Description="Parada" Value="0"/>
+      <Enumerated Description="Iniciada" Value="1"/>
+      <Enumerated Description="EmCurso" Value="2"/>
+      <Enumerated Description="Concluida" Value="3"/>
+    </EnumValueType>
+    <EnumValueType ID="7" Name="Portao">
+      <Enumerated Description="Fechar" Value="0"/>
+      <Enumerated Description="Abrir" Value="1"/>
+    </EnumValueType>
   </EnumValueTypeList>
 
-  <!-- ARRAY -->
-  <ArrayValueTypeList>
-    <ArrayValueType ID="1" Name="Nome Empresa" MaxLen="10">
+  <!-- VECTOR -->
+  <VectorValueTypeList>
+    <VectorValueType ID="1" Name="Nome Empresa" MaxLen="10">
       <ValueConversion Type="NONE" Ref="" />
-    </ArrayValueType>
-    <ArrayValueType ID="2" Name="Float IEEE" MaxLen="8">
+    </VectorValueType>
+    <VectorValueType ID="2" Name="Float IEEE" MaxLen="8">
       <ValueConversion Type="OBJECT" Ref="1" />
-    </ArrayValueType>
-  </ArrayValueTypeList>
+    </VectorValueType>
+    <VectorValueType ID="3" Name="Relogio" MaxLen="5">
+      <ValueConversion Type="NONE" Ref="" />
+    </VectorValueType>
+  </VectorValueTypeList>
 
 
   <!-- DEVICE TYPES DEFINITION ########################-->
@@ -94,17 +152,72 @@
   <DeviceTypeList>
     <DeviceType ID="1" Name="Lâmpada-Regulada">
       <PropertyTypeList>
-        <PropertyType ID="1" Name="On-Off" AccessMode="RW" ValueType="ENUM" RefValueType="1" />
+        <PropertyType ID="1" Name="EstadoLigadoDesligado" AccessMode="RW" ValueType="ENUM" RefValueType="1" />
         <PropertyType ID="2" Name="Intensidade" AccessMode="RW" ValueType="SCALAR" RefValueType="1" />
       </PropertyTypeList>
     </DeviceType>
 
     <DeviceType ID="2" Name="Sensor-Temperatura">
       <PropertyTypeList>
-        <PropertyType ID="2" Name="Temperatura" AccessMode="RO" ValueType="SCALAR" RefValueType="1" />
+        <PropertyType ID="3" Name="Temperatura" AccessMode="RO" ValueType="SCALAR" RefValueType="3" />
       </PropertyTypeList>
     </DeviceType>
-  </DeviceTypeList>
+
+    <DeviceType ID="3" Name="Mostrador de Texto">
+      <PropertyTypeList>
+        <PropertyType ID="4" Name="Texto" AccessMode="RW" ValueType="VECTOR" RefValueType="1" />
+      </PropertyTypeList>
+    </DeviceType>
+
+  <DeviceType ID="4" Name="Televisor - Canais Basicos">
+    <PropertyTypeList>
+      <PropertyType ID="1" Name="EstadoLigadoDesligado" AccessMode="RW" ValueType="ENUM" RefValueType="1" />
+      <PropertyType ID="5" Name="Canal" AccessMode="RW" ValueType="ENUM" RefValueType="3" />
+    </PropertyTypeList>
+  </DeviceType>
+
+    <DeviceType ID="5" Name="Televisor - TVCABO">
+      <PropertyTypeList>
+        <PropertyType ID="1" Name="EstadoLigadoDesligado" AccessMode="RW" ValueType="ENUM" RefValueType="1" />
+        <PropertyType ID="6" Name="Canal" AccessMode="RW" ValueType="SCALAR" RefValueType="4" />
+      </PropertyTypeList>
+    </DeviceType>
+
+    <DeviceType ID="6" Name="Lâmpada-Casual">
+      <PropertyTypeList>
+        <PropertyType ID="7" Name="EstadoLigadoDesligado" AccessMode="RW" ValueType="ENUM" RefValueType="1" />
+      </PropertyTypeList>
+    </DeviceType>
+
+    <DeviceType ID="7" Name="Relogio">
+      <PropertyTypeList>
+        <PropertyType ID="8" Name="Relogio" AccessMode="RO" ValueType="VECTOR" RefValueType="1" />
+      </PropertyTypeList>
+    </DeviceType>
+
+    <DeviceType ID="8" Name="Maquina de Lavar Roupa">
+      <PropertyTypeList>
+        <PropertyType ID="8" Name="EstadoLigadoDesligado" AccessMode="RW" ValueType="ENUM" RefValueType="1" />
+        <PropertyType ID="9" Name="EstadoLavagem" AccessMode="RO" ValueType="ENUM" RefValueType="6" />
+        <PropertyType ID="10" Name="Programa" AccessMode="RW" ValueType="ENUM" RefValueType="4" />
+        <PropertyType ID="11" Name="Graus" AccessMode="RW" ValueType="ENUM" RefValueType="5" />
+      </PropertyTypeList>
+    </DeviceType>
+
+      <DeviceType ID="9" Name="Estor">
+        <PropertyTypeList>
+          <PropertyType ID="2" Name="Abertura" AccessMode="RW" ValueType="SCALAR" RefValueType="1" />
+        </PropertyTypeList>
+      </DeviceType>
+
+    <DeviceType ID="10" Name="Portao da Garagem">
+      <PropertyTypeList>
+        <PropertyType ID="9" Name="Estado" AccessMode="RO" ValueType="ENUM" RefValueType="6" />
+        <PropertyType ID="12" Name="AbrirFecharPortao" AccessMode="WO" ValueType="ENUM" RefValueType="7" />
+      </PropertyTypeList>
+    </DeviceType>
+ 
+   </DeviceTypeList>
 
   <!-- SERVICE DEFINITION #############################-->
 
@@ -114,17 +227,106 @@
     <Service ID="3" Name="Alarme"/>
     <Service ID="4" Name="Tomadas"/>
     <Service ID="5" Name="Irrigação"/>
+    <Service ID="6" Name="Entretenimento"/>
+    <Service ID="7" Name="Electrodomesticos"/>
   </ServiceList>
 
 
-   <!--DEVICE DEFINITION #############################-->
+  <!-- DEVICE DEFINITION #############################-->
   <DeviceList>
-    <Device ID="1" RefDeviceType="1" Name="Candeeiro-Mesa" Address="#0100" RefDivision="2" AccessLevel="3,5" UserBlocked="-,27">
+    <Device ID="1" RefDeviceType="1" Name="Candeeiro-Mesa" Address="#0100" RefDivision="2" AccessLevel="0" UserBlocked="-">
       <DeviceServiceList>
-        <DeviceService RefService="1" />
-        <DeviceService RefService="4" />
+        <DeviceService RefService="2" />
+        <DeviceService RefService="3" />
       </DeviceServiceList>
     </Device>
+
+    <Device ID="2" RefDeviceType="2" Name="Temperatura Ambiente" Address="#0125" RefDivision="2" AccessLevel="1,2" UserBlocked="-,2">
+      <DeviceServiceList>
+        <DeviceService RefService="1" />
+      </DeviceServiceList>
+    </Device>
+    
+      <Device ID="3" RefDeviceType="3" Name="Painel Informativo" Address="#0100" RefDivision="2" AccessLevel="1,1" UserBlocked="-,-">
+        <DeviceServiceList>
+          <DeviceService RefService="6" />
+        </DeviceServiceList>
+      </Device>
+
+    <Device ID="4" RefDeviceType="4" Name="TV" Address="#0110" RefDivision="2" AccessLevel="2" UserBlocked="-,1">
+      <DeviceServiceList>
+        <DeviceService RefService="6" />
+      </DeviceServiceList>
+    </Device>
+
+    <Device ID="5" RefDeviceType="5" Name="TVCABO" Address="#0100" RefDivision="3" AccessLevel="0" UserBlocked="-,-">
+      <DeviceServiceList>
+        <DeviceService RefService="6" />
+      </DeviceServiceList>
+    </Device>
+
+    <Device ID="6" RefDeviceType="6" Name="Luz" Address="#0100" RefDivision="1" AccessLevel="0" UserBlocked="-,-">
+      <DeviceServiceList>
+        <DeviceService RefService="2" />
+      </DeviceServiceList>
+    </Device>
+
+    <Device ID="7" RefDeviceType="6" Name="Luz" Address="#0100" RefDivision="2"  AccessLevel="0" UserBlocked="-,-">
+      <DeviceServiceList>
+        <DeviceService RefService="2" />
+      </DeviceServiceList>
+    </Device>
+
+    <Device ID="8" RefDeviceType="6" Name="Luz" Address="#0100" RefDivision="3"  AccessLevel="0" UserBlocked="-,-">
+      <DeviceServiceList>
+        <DeviceService RefService="2" />
+      </DeviceServiceList>
+    </Device>
+
+    <Device ID="9" RefDeviceType="6" Name="Luz" Address="#0100" RefDivision="4" AccessLevel="0" UserBlocked="-,-">
+      <DeviceServiceList>
+        <DeviceService RefService="2" />
+      </DeviceServiceList>
+    </Device>
+
+    <Device ID="10" RefDeviceType="6" Name="Luz" Address="#0100" RefDivision="5"  AccessLevel="0" UserBlocked="-,-">
+      <DeviceServiceList>
+        <DeviceService RefService="2" />
+      </DeviceServiceList>
+    </Device>
+    
+
+    <Device ID="11" RefDeviceType="7" Name="Relogio Electronico" Address="#0100" RefDivision="3"  AccessLevel="0" UserBlocked="-,-">
+      <DeviceServiceList>
+        <DeviceService RefService="6" />
+      </DeviceServiceList>
+    </Device>
+
+    <Device ID="12" RefDeviceType="8" Name="Maquina Lavar Roupa" Address="#0100" RefDivision="2"  AccessLevel="0" UserBlocked="-,-">
+      <DeviceServiceList>
+        <DeviceService RefService="7" />
+      </DeviceServiceList>
+    </Device>
+
+    <Device ID="13" RefDeviceType="9" Name="Estor" Address="#0100" RefDivision="2"  AccessLevel="0" UserBlocked="-,-">
+      <DeviceServiceList>
+        <DeviceService RefService="1" />
+      </DeviceServiceList>
+    </Device>
+
+    <Device ID="14" RefDeviceType="9" Name="Estor" Address="#0100" RefDivision="3"  AccessLevel="0" UserBlocked="-,-">
+      <DeviceServiceList>
+        <DeviceService RefService="1" />
+      </DeviceServiceList>
+    </Device>
+
+    <Device ID="15" RefDeviceType="10" Name="Portao" Address="#0100" RefDivision="1"  AccessLevel="0" UserBlocked="-,-">
+      <DeviceServiceList>
+        <DeviceService RefService="7" />
+      </DeviceServiceList>
+    </Device>
+    
+    
   </DeviceList>  
   
 </HomeDescription>
