@@ -7,6 +7,7 @@ using System.ServiceModel.Description;
 using System.Runtime.Serialization;
 using System.Net;
 
+
 namespace Service
 {
     public class Program
@@ -18,10 +19,10 @@ namespace Service
             // Then using host name, get the IP address list..
             IPHostEntry ipEntry = Dns.GetHostByName(strHostName);
             IPAddress[] addr = ipEntry.AddressList;
-            Console.WriteLine("IP Address : {0} ", addr[0].ToString());      
+            Console.WriteLine("LAN IP Address : {0} ", addr[0].ToString());
+            Console.WriteLine("Ad-hoc IP Address : {0} ", addr[2].ToString());      
             return addr[0].ToString();
         }
-
 
         static void Main(string[] args)
         {
@@ -36,7 +37,6 @@ namespace Service
                 var smp = new ServiceMetadataBehavior();
                 smp.HttpGetEnabled = true;
                 localhost.Description.Behaviors.Add(smp);
-
                 localhost.Open();
                 Console.WriteLine("Tou a correr um serviço em: " + baseAddress.ToString());
                 Console.ReadLine();
@@ -48,8 +48,6 @@ namespace Service
                 Console.WriteLine("Erro "+e.ToString());
             }
         }
-
-
     }
 
 }

@@ -50,10 +50,6 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="XMLParser, Version=1.0.3623.5218, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Common\XMLParser\bin\Debug\XMLParser.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DomoService.cs" />
@@ -63,9 +59,18 @@
     <Compile Include="Server.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Casa1.xml">
+    <Content Include="HouseDescriptions\Casa1.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="StateSimulation\CasaState1.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\XMLStateParser\XMLStateParser.csproj">
+      <Project>{F089C260-6BFA-48B3-8BBB-1F4B5F610829}</Project>
+      <Name>XMLStateParser</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
