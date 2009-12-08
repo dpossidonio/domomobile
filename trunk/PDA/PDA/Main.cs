@@ -19,11 +19,12 @@ namespace PDA
         private int state;
         private int SelectedHouse;
         private string MyUsername;
-        private House Myhouse;
+        private House MyHouse;
         private Floor MyFloor;
         private Device MyDevice;
         private Division MyDivision;
         private Property MyProperty;
+        private string[] HouseList;
 
         private DomoServiceClient Client;
 
@@ -62,10 +63,15 @@ namespace PDA
         {
             try
             {
-                if (Client.Set(MyUsername, MyDevice.ID, MyProperty.Type.ID, newValue) == 1)
-                    MyProperty.Value = newValue;
-                else
-                    MessageBox.Show("Is Not Possible To Change This Value!");
+                var res = Client.Set(MyUsername, MyHouse.ID, MyDevice.ID, MyProperty.Type.ID, newValue);
+                switch (res)
+                {
+                    case 0: MessageBox.Show("Is not possible connect to device."); break;
+                    case 1: MyProperty.Value = newValue; break;
+                    case 2: MessageBox.Show("Permision denied."); break;
+                    case 3: MessageBox.Show("Read only Property."); break;
+                    default: break;
+                }
             }
             catch (Exception ex)
             {
@@ -77,7 +83,20 @@ namespace PDA
         {
             try
             {
-                MyProperty.Value = Client.Get(MyUsername, MyDevice.ID, MyProperty.Type.ID);
+                var res = Client.Get(MyUsername, MyHouse.ID, MyDevice.ID, MyProperty.Type.ID);
+                if (res.Length == 2 && res.Substring(0, 1).Equals("#"))
+                {
+                    var errorId = int.Parse(res.Substring(1));
+                    switch (errorId)
+                    {
+                        case 0: MessageBox.Show("Is not possible connect to device."); break;
+                        case 1: MessageBox.Show("Permision denied."); break;
+                        case 2: MessageBox.Show("Write only Property."); break;
+                        default: break;
+                    }
+                }
+                else
+                    MyProperty.Value = res;
             }
             catch (Exception ex)
             {
@@ -116,7 +135,7 @@ namespace PDA
 
         private string[] callGetHouses()
         {
-            string[] housesList = {};
+            string[] housesList = { };
             try
             {
                 housesList = Client.GetHouses(MyUsername);
@@ -130,7 +149,7 @@ namespace PDA
 
         private bool callLogin()
         {
-            bool logged = false; 
+            bool logged = false;
             try
             {
                 if (Client.Login(user.Text, pass.Text))
@@ -187,12 +206,11 @@ namespace PDA
             {
                 var houses = callGetHouses();
                 listBox1.Items.Clear();
-                foreach (var item in houses)
-                {
-                    listBox1.Items.Add(item);
-                }
+                for (var i = 0; i < HouseList.Length; i += 2)
+                    listBox1.Items.Add(HouseList[i]);
             }
-            else {
+            else
+            {
                 menuBack.Enabled = true;
                 labelChooseOption.Visible = true;
                 listBox1.Visible = true;
@@ -225,7 +243,7 @@ namespace PDA
             state = 4;
 
             listBox1.Items.Clear();
-            foreach (var floor in Myhouse.Floors)
+            foreach (var floor in MyHouse.Floors)
             {
                 listBox1.Items.Add(floor);
             }
@@ -382,11 +400,11 @@ namespace PDA
                 wrongLabel.Visible = true;
             else
             {
-                var houses = callGetHouses();
+                HouseList = callGetHouses();
                 listBox1.Items.Clear();
-                foreach (var item in houses)
+                for (var i = 0; i < HouseList.Length; i += 2)
                 {
-                    listBox1.Items.Add(item);
+                    listBox1.Items.Add(HouseList[i]);
                 }
                 goToStep3();
             }
@@ -400,11 +418,11 @@ namespace PDA
                 if (listBox1.SelectedIndex != SelectedHouse)
                 {
                     SelectedHouse = listBox1.SelectedIndex;
-                    house = callGetHomeDescription(SelectedHouse);
+                    house = callGetHomeDescription(int.Parse(HouseList[((SelectedHouse + 1) * 2) - 1]));
 
                     Parser c = new Parser();
                     XDocument doc = XDocument.Parse(house);
-                    Myhouse = c.getHouse(doc);
+                    MyHouse = c.getHouse(doc);
                 }
                 goToStep4();
             }
@@ -561,9 +579,9 @@ namespace PDA
             i.Text = "AAA";
             //this.menuItem3.MenuItems.Add(this.addFavoriteMenu);
             menuFavorites.MenuItems.Add(i);
-           
+
             //TODO
-            
+
         }
 
     }
