@@ -53,7 +53,7 @@ namespace PDA
         /// Reads the access Levels
         /// </summary>
         /// <returns></returns>
-        public void getAccessLevels(House house, XDocument xd)
+        private void getAccessLevels(House house, XDocument xd)
         {
             foreach (var item in xd.Root.Element("AccessLevelList").Elements("AccessLevel"))
             {
@@ -68,7 +68,7 @@ namespace PDA
         /// Reads the Converions of the Value Types
         /// </summary>
         /// <returns></returns
-        public void getConversions(House house, XDocument xd)
+        private void getConversions(House house, XDocument xd)
         {
             foreach (var item in xd.Root.Element("ConversionFormulaList").Elements("ConversionFormula"))
             {
@@ -143,7 +143,7 @@ namespace PDA
                 house.PropertyValueTypes.Add(enumtType);
             }
             //// Vector Types
-            foreach (var item in xd.Root.Element("ArrayValueTypeList").Elements("ArrayValueType"))
+            foreach (var item in xd.Root.Element("VectorValueTypeList").Elements("VectorValueType"))
             {
                 var vectorType = new VectorValueType();
                 var vector = new Vector();
@@ -231,12 +231,27 @@ namespace PDA
                 dev.Address = item.Attribute("Address").Value;
                 var userBlock = item.Attribute("UserBlocked").Value.Split(',');
 
-                if (userBlock[0].Equals('-'))
-                    dev.MonitorizationBlockID = int.Parse(userBlock[0]);
-                if (userBlock.Length > 1 && userBlock[1].Equals('-'))
-                    dev.CommandBlockID = int.Parse(userBlock[1]);
-                else if (userBlock.Length == 1)
-                    dev.CommandBlockID = int.Parse(userBlock[0]);
+                if (userBlock.Length > 1)
+                {
+                    if (userBlock[0].Equals("-"))
+                        dev.MonitorizationBlockID = 0;
+                    else dev.MonitorizationBlockID = int.Parse(userBlock[0]);
+
+                    if (userBlock[1].Equals("-"))
+                        dev.CommandBlockID = 0;
+                    else dev.CommandBlockID = int.Parse(userBlock[1]);
+
+                }
+                else if (userBlock[0].Equals("-"))
+                     {
+                        dev.CommandBlockID = 0;
+                        dev.MonitorizationBlockID = 0;
+                     }
+                     else
+                    {
+                        dev.CommandBlockID = int.Parse(userBlock[0]);
+                        dev.MonitorizationBlockID = int.Parse(userBlock[0]);
+                    }
 
                 var deviceTypeRef = int.Parse(item.Attribute("RefDeviceType").Value);
 
@@ -247,13 +262,13 @@ namespace PDA
                 dev.MyDeviceType = devtype;
 
                 foreach (var proptype in devtype.PropertyTypes)
-            	{
+                {
                     var property = new Property()
                     {
                         Type = proptype
                     };
                     dev.Properties.Add(property);
-	            }
+                }
 
                 var divisionID = int.Parse(item.Attribute("RefDivision").Value);
                 var division = (from a in house.Floors
@@ -261,6 +276,7 @@ namespace PDA
                                 where d.ID == divisionID
                                 select d).First();
                 division.Devices.Add(dev);
+                house.Devices.Add(dev);
 
                 foreach (var item2 in item.Element("DeviceServiceList").Elements("DeviceService"))
                 {
@@ -306,7 +322,7 @@ namespace PDA
         /// Reads the Floors of the House
         /// </summary>
         /// <returns></returns
-        private void readFloors(House house,XElement floor)
+        private void readFloors(House house, XElement floor)
         {
             foreach (var item in floor.Element("FloorList").Elements("Floor"))
             {
