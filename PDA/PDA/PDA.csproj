@@ -46,10 +46,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.WindowsCE.Forms" />
-    <Reference Include="Model, Version=1.0.3614.42875, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Common\Model\bin\Debug\Model.dll</HintPath>
-    </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -62,10 +58,6 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="XMLParser, Version=1.0.3623.5218, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Common\XMLParser\bin\Debug\XMLParser.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domo_action.cs">
@@ -104,6 +96,14 @@
     <Content Include="Readme.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\Model\Model.csproj">
+      <Project>{ED15D343-2308-42C3-AC34-EED994774040}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\XMLParser\XMLParser.csproj">
+      <Project>{F089C260-6BFA-48B3-8BBB-1F4B5F610829}</Project>
+      <Name>XMLParser</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ClientDomoService\ClientDomoService.csproj">
       <Project>{B2DE98A6-89B4-4AC5-BA88-E9639F80F120}</Project>
       <Name>ClientDomoService</Name>
