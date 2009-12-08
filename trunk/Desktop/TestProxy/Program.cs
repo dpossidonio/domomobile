@@ -18,6 +18,7 @@ namespace TestProxy
             {
                 Binding binding = new BasicHttpBinding();
                 EndpointAddress remoteAddress = new EndpointAddress("http://192.168.0.15:8000/DomoService");
+
                 var Client = new DomoServiceClient("BasicHttpBinding_IDomoService");
                 Client.Echo();
             }
