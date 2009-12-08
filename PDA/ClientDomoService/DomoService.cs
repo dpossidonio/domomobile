@@ -16,15 +16,15 @@ public interface IDomoService
     
     string Echo();
     
-    bool Login(string Token, string Password);
+    bool Login(string Username, string Password);
     
     string[] GetHouses(string Token);
     
     string GetHouseDescription(string Token, int HouseId);
     
-    int Set(string Token, int RefDevice, int RefProperty, string Value);
+    int Set(string Token, int HouseId, int RefDevice, int RefProperty, string Value);
     
-    string Get(string Token, int RefDevice, int RefProperty);
+    string Get(string Token, int HouseId, int RefDevice, int RefProperty);
 }
 
 [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -64,7 +64,7 @@ public partial class LoginRequest
 {
     
     [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Namespace="http://DomoMobile.com", Order=0)]
-    public string Token;
+    public string Username;
     
     [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Namespace="http://DomoMobile.com", Order=1)]
     public string Password;
@@ -73,9 +73,9 @@ public partial class LoginRequest
     {
     }
     
-    public LoginRequest(string Token, string Password)
+    public LoginRequest(string Username, string Password)
     {
-        this.Token = Token;
+        this.Username = Username;
         this.Password = Password;
     }
 }
@@ -190,21 +190,25 @@ public partial class SetRequest
     public string Token;
     
     [System.Xml.Serialization.XmlElementAttribute(Namespace="http://DomoMobile.com", Order=1)]
-    public int RefDevice;
+    public int HouseId;
     
     [System.Xml.Serialization.XmlElementAttribute(Namespace="http://DomoMobile.com", Order=2)]
+    public int RefDevice;
+    
+    [System.Xml.Serialization.XmlElementAttribute(Namespace="http://DomoMobile.com", Order=3)]
     public int RefProperty;
     
-    [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Namespace="http://DomoMobile.com", Order=3)]
+    [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Namespace="http://DomoMobile.com", Order=4)]
     public string Value;
     
     public SetRequest()
     {
     }
     
-    public SetRequest(string Token, int RefDevice, int RefProperty, string Value)
+    public SetRequest(string Token, int HouseId, int RefDevice, int RefProperty, string Value)
     {
         this.Token = Token;
+        this.HouseId = HouseId;
         this.RefDevice = RefDevice;
         this.RefProperty = RefProperty;
         this.Value = Value;
@@ -240,18 +244,22 @@ public partial class GetRequest
     public string Token;
     
     [System.Xml.Serialization.XmlElementAttribute(Namespace="http://DomoMobile.com", Order=1)]
-    public int RefDevice;
+    public int HouseId;
     
     [System.Xml.Serialization.XmlElementAttribute(Namespace="http://DomoMobile.com", Order=2)]
+    public int RefDevice;
+    
+    [System.Xml.Serialization.XmlElementAttribute(Namespace="http://DomoMobile.com", Order=3)]
     public int RefProperty;
     
     public GetRequest()
     {
     }
     
-    public GetRequest(string Token, int RefDevice, int RefProperty)
+    public GetRequest(string Token, int HouseId, int RefDevice, int RefProperty)
     {
         this.Token = Token;
+        this.HouseId = HouseId;
         this.RefDevice = RefDevice;
         this.RefProperty = RefProperty;
     }
@@ -323,9 +331,9 @@ public partial class DomoServiceClient : Microsoft.Tools.ServiceModel.CFClientBa
         return retVal;
     }
     
-    public bool Login(string Token, string Password)
+    public bool Login(string Username, string Password)
     {
-        LoginRequest request = new LoginRequest(Token, Password);
+        LoginRequest request = new LoginRequest(Username, Password);
         LoginResponse response = this.Login(request);
         return response.LoginResult;
     }
@@ -377,9 +385,9 @@ public partial class DomoServiceClient : Microsoft.Tools.ServiceModel.CFClientBa
         return retVal;
     }
     
-    public int Set(string Token, int RefDevice, int RefProperty, string Value)
+    public int Set(string Token, int HouseId, int RefDevice, int RefProperty, string Value)
     {
-        SetRequest request = new SetRequest(Token, RefDevice, RefProperty, Value);
+        SetRequest request = new SetRequest(Token, HouseId, RefDevice, RefProperty, Value);
         SetResponse response = this.Set(request);
         return response.SetResult;
     }
@@ -395,9 +403,9 @@ public partial class DomoServiceClient : Microsoft.Tools.ServiceModel.CFClientBa
         return retVal;
     }
     
-    public string Get(string Token, int RefDevice, int RefProperty)
+    public string Get(string Token, int HouseId, int RefDevice, int RefProperty)
     {
-        GetRequest request = new GetRequest(Token, RefDevice, RefProperty);
+        GetRequest request = new GetRequest(Token, HouseId, RefDevice, RefProperty);
         GetResponse response = this.Get(request);
         return response.GetResult;
     }
