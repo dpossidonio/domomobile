@@ -13,7 +13,7 @@ namespace Service
         string Echo();
 
         [OperationContract]
-        bool Login(string Token,string Password);
+        bool Login(string Username,string Password);
 
         [OperationContract]
         string[] GetHouses(string Token);
@@ -22,9 +22,11 @@ namespace Service
         string GetHouseDescription(string Token,int HouseId);
 
         [OperationContract]
-        int Set(string Token,int RefDevice,int RefProperty,string Value);
+        int Set(string Token, int HouseId, int RefDevice, int RefProperty, string Value);
 
         [OperationContract]
-        string Get(string Token,int RefDevice, int RefProperty);
+        string Get(string Token, int HouseId, int RefDevice, int RefProperty);
     }
+
+
 }
