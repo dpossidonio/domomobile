@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{3A7EEBE3-85DC-4E0F-A1EF-F5DE3ABC083B}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -141,6 +141,10 @@
     <ProjectReference Include="..\..\Common\Model\Model.csproj">
       <Project>{ED15D343-2308-42C3-AC34-EED994774040}</Project>
       <Name>Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\XMLParser\XMLParser.csproj">
+      <Project>{F089C260-6BFA-48B3-8BBB-1F4B5F610829}</Project>
+      <Name>XMLParser</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
