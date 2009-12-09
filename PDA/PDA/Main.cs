@@ -24,7 +24,7 @@ namespace PDA
         private Device MyDevice;
         private Division MyDivision;
         private Property MyProperty;
-        private string[] HouseList;
+        private Dictionary<int, string> HouseList;
 
         private DomoServiceClient Client;
 
@@ -34,7 +34,8 @@ namespace PDA
             SelectedHouse = -1;
             InitializeComponent();
             ////Apagar
-            IpTextBox.Text = "192.168.0.15";
+            //IpTextBox.Text = "192.168.0.15";
+            IpTextBox.Text = "169.254.74.74";
             user.Text = "David";
             pass.Text = "123";
             ///
@@ -133,18 +134,26 @@ namespace PDA
             return house;
         }
 
-        private string[] callGetHouses()
+        private List<string> callGetHouses()
         {
-            string[] housesList = { };
+            HouseList = new Dictionary<int, string>();
+            List<string> res = new List<string>();
             try
             {
-                housesList = Client.GetHouses(MyUsername);
+                var housesList = Client.GetHouses(MyUsername);
+                for (int i = 0; i < housesList.Length; i++)
+                {
+                    var aux = housesList[i].Split(':');
+                    HouseList.Add(int.Parse(aux[0]), aux[1]);
+                    res.Add(aux[1]);
+                }
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-            return housesList;
+            return res;
         }
 
         private bool callLogin()
@@ -206,8 +215,10 @@ namespace PDA
             {
                 var houses = callGetHouses();
                 listBox1.Items.Clear();
-                for (var i = 0; i < HouseList.Length; i += 2)
-                    listBox1.Items.Add(HouseList[i]);
+                foreach(var houseName in houses)
+                {
+                    listBox1.Items.Add(houseName);
+                }
             }
             else
             {
@@ -400,11 +411,11 @@ namespace PDA
                 wrongLabel.Visible = true;
             else
             {
-                HouseList = callGetHouses();
+                var houses = callGetHouses();
                 listBox1.Items.Clear();
-                for (var i = 0; i < HouseList.Length; i += 2)
+                foreach (var houseName in houses)
                 {
-                    listBox1.Items.Add(HouseList[i]);
+                    listBox1.Items.Add(houseName);
                 }
                 goToStep3();
             }
@@ -418,7 +429,7 @@ namespace PDA
                 if (listBox1.SelectedIndex != SelectedHouse)
                 {
                     SelectedHouse = listBox1.SelectedIndex;
-                    house = callGetHomeDescription(int.Parse(HouseList[((SelectedHouse + 1) * 2) - 1]));
+                    house = callGetHomeDescription(HouseList.Keys.ElementAt(SelectedHouse));
 
                     Parser c = new Parser();
                     XDocument doc = XDocument.Parse(house);

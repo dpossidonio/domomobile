@@ -37,8 +37,7 @@ namespace Service
         /// </summary>
         /// <param name="Token"></param>
         /// <returns>
-        /// string[odd] - Description
-        /// string[even] - Id
+        /// string[] - {id:Description,...}
         /// </returns>
         public string[] GetHouses(string Token)
         {
@@ -51,8 +50,7 @@ namespace Service
                 {
                     if (user.Username.ToString().Equals(Token))
                     {
-                        houseNames.Add(house.Value.Name);
-                        houseNames.Add(string.Format("{0}", house.Key));
+                        houseNames.Add(string.Format("{0}:{1}", house.Key, house.Value.Name));
                         Console.Write(house.Value.Name);
                     }
                 }
