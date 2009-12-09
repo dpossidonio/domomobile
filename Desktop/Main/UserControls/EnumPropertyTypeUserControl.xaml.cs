@@ -11,38 +11,47 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using DomoMobile.Common;
+using System.Collections.ObjectModel;
 
 namespace Main.UserControls
 {
     /// <summary>
-    /// Interaction logic for EnumPropertyType.xaml
+    /// Interaction logic for ScalarPropertyTypeUserControl.xaml
     /// </summary>
     public partial class EnumPropertyTypeUserControl : UserControl, INotifyPropertyChanged
     {
-        //private Enumerated _selectedItem;
-        //public Enumerated SelectedItem
-        //{
-        //    get { return _selectedItem; }
-        //    set { _selectedItem = value; Notify("SelectedItem"); }
-        //}
+        public Context CurrentContext { get; set; }
+
+        public EnumPropertyTypeUserControl()
+        {
+            InitializeComponent();
+        }
+
+        protected override void OnInitialized(EventArgs e)
+        {
+            base.OnInitialized(e);
+
+            Window1.ServiceProvider.Get(EnumPropertyType.ID);
+        }
 
         private ObservableCollection<Enumerated> _items;
         public ObservableCollection<Enumerated> Items
         {
             get { return _items; }
             set { _items = value; Notify("Items"); }
+
         }
 
-        public EnumPropertyTypeUserControl(Property enumPropertyType)
+        public EnumPropertyTypeUserControl(Context context, Property enumPropertyType)
         {
+            CurrentContext = context;
             this.DataContext = this;
             EnumPropertyType = (EnumeratedValueType)(enumPropertyType.Type.ValueType);
             Items = new ObservableCollection<Enumerated>(EnumPropertyType.TypeOfValue);
 
-            //InitializeComponent();
+            InitializeComponent();
         }
 
         public EnumeratedValueType EnumPropertyType { get; set; }

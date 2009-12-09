@@ -10,9 +10,20 @@ using Main.UserControls;
 
 namespace Main.ViewModels
 {
-    public class SelectScreenViewModel : BaseViewModel
+    public class ContextualizedViewModel : BaseViewModel
     {
-        public SelectScreenViewModel()
+        protected Context CurrentContext { get; set; }
+
+        public ContextualizedViewModel(Context context)
+        {
+            CurrentContext = context;
+        }
+    }
+    
+    public class SelectScreenViewModel : ContextualizedViewModel
+    {
+        public SelectScreenViewModel(Context context)
+            : base(context)
         {
             var goUpAction = new DelegateCommand(new Action(delegate()
             {
@@ -67,6 +78,10 @@ namespace Main.ViewModels
                 var i = item as AggregatorSelectionItems;
                 if (i != null)
                 {
+                    if (i is HouseSelectionItem)
+                        CurrentContext.CurrentHouse = (i as HouseSelectionItem).House;
+                    if (i is DeviceSelectionItem)
+                        CurrentContext.CurrentDevice = (i as DeviceSelectionItem).Device;
                     i.ItemClicked += new Action<IEnumerable<SelectionItem>, AggregatorSelectionItems>(i_ItemClicked);
                 }
             }
@@ -78,7 +93,7 @@ namespace Main.ViewModels
         }
     }
 
-    public abstract class SelectionItem : BaseViewModel
+    public abstract class SelectionItem : ContextualizedViewModel
     {
         public AggregatorSelectionItems Parent { get; set; }
 
@@ -89,7 +104,8 @@ namespace Main.ViewModels
             set { _actionCommand = value; Notify("ActionCommand"); }
         }
 
-        public SelectionItem(AggregatorSelectionItems parent)
+        public SelectionItem(Context context, AggregatorSelectionItems parent)
+            : base(context)
         {
             Parent = parent;
         }
@@ -105,8 +121,8 @@ namespace Main.ViewModels
                 ItemClicked(items, parent);
         }
 
-        public AggregatorSelectionItems(AggregatorSelectionItems parent)
-            : base(parent)
+        public AggregatorSelectionItems(Context context, AggregatorSelectionItems parent)
+            : base(context, parent)
         {
             var call = new Action(delegate()
             {
@@ -122,8 +138,8 @@ namespace Main.ViewModels
 
     public class HouseSelectionItem : AggregatorSelectionItems
     {
-        public HouseSelectionItem(AggregatorSelectionItems parent)
-            : base(parent) { }
+        public HouseSelectionItem(Context context, AggregatorSelectionItems parent)
+            : base(context, parent) { }
 
         private House _house;
         public House House
@@ -137,7 +153,7 @@ namespace Main.ViewModels
             IList<SelectionItem> items = new List<SelectionItem>();
             foreach (var floor in House.Floors)
             {
-                items.Add(new FloorSelectionItem(floor, this));
+                items.Add(new FloorSelectionItem(CurrentContext, floor, this));
             }
             return items;
         }
@@ -145,8 +161,8 @@ namespace Main.ViewModels
 
     public class FloorSelectionItem : AggregatorSelectionItems
     {
-        public FloorSelectionItem(Floor floor, AggregatorSelectionItems parent)
-            : base(parent)
+        public FloorSelectionItem(Context context, Floor floor, AggregatorSelectionItems parent)
+            : base(context, parent)
         {
             Floor = floor;
         }
@@ -158,7 +174,7 @@ namespace Main.ViewModels
             IList<SelectionItem> items = new List<SelectionItem>();
             foreach (var division in Floor.Divisions)
             {
-                items.Add(new DivisionSelectionItem(division, this));
+                items.Add(new DivisionSelectionItem(CurrentContext, division, this));
             }
             return items;
         }
@@ -166,8 +182,8 @@ namespace Main.ViewModels
 
     public class DivisionSelectionItem : AggregatorSelectionItems
     {
-        public DivisionSelectionItem(Division division, AggregatorSelectionItems parent)
-            : base(parent)
+        public DivisionSelectionItem(Context context, Division division, AggregatorSelectionItems parent)
+            : base(context, parent)
         {
             Division = division;
         }
@@ -179,7 +195,7 @@ namespace Main.ViewModels
             IList<SelectionItem> items = new List<SelectionItem>();
             foreach (var device in Division.Devices)
             {
-                items.Add(new DeviceSelectionItem(device, this));
+                items.Add(new DeviceSelectionItem(CurrentContext, device, this));
             }
             return items;
         }
@@ -187,8 +203,8 @@ namespace Main.ViewModels
 
     public class DeviceSelectionItem : AggregatorSelectionItems
     {
-        public DeviceSelectionItem(Device device, AggregatorSelectionItems parent)
-            : base(parent)
+        public DeviceSelectionItem(Context context, Device device, AggregatorSelectionItems parent)
+            : base(context, parent)
         {
             Device = device;
         }
@@ -200,7 +216,7 @@ namespace Main.ViewModels
             IList<SelectionItem> items = new List<SelectionItem>();
             foreach (var property in Device.Properties)
             {
-                items.Add(new PropertySelectionItem(property, this));
+                items.Add(new PropertySelectionItem(CurrentContext, property, this));
             }
             return items;
         }
@@ -208,14 +224,14 @@ namespace Main.ViewModels
 
     public class PropertySelectionItem : SelectionItem
     {
-        public PropertySelectionItem(Property property, AggregatorSelectionItems parent)
-            : base(parent)
+        public PropertySelectionItem(Context context, Property property, AggregatorSelectionItems parent)
+            : base(context, parent)
         {
             Property = property;
 
             var action = new DelegateCommand(new Action(delegate()
             {
-                var window = new PropertyTypePopup(PropertyTypeUserControlFactory.GetUserControl(Property));
+                var window = new PropertyTypePopup(PropertyTypeUserControlFactory.GetUserControl(context, Property));
                 window.Show();
             }));
             ActionCommand = action;
@@ -225,19 +241,19 @@ namespace Main.ViewModels
 
     public static class PropertyTypeUserControlFactory
     {
-        public static UserControl GetUserControl(Property prop)
+        public static UserControl GetUserControl(Context context, Property prop)
         {
             if (prop.Type.TypeOfValue == PropertyType.TypeOfValues.ENUM)
             {
-                return new EnumPropertyTypeUserControl(prop);
+                return new EnumPropertyTypeUserControl(context, prop);
             }
             else if (prop.Type.TypeOfValue == PropertyType.TypeOfValues.SCALAR)
             {
-                return new ScalarPropertyTypeUserControl(prop);
+                return new ScalarPropertyTypeUserControl(context, prop);
             }
             else if (prop.Type.TypeOfValue == PropertyType.TypeOfValues.VECTOR)
             {
-                return new VectorPropertyTypeUserControl(prop);
+                return new VectorPropertyTypeUserControl(context, prop);
             }
             else
             {

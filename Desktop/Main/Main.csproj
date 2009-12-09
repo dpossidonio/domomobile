@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{3A7EEBE3-85DC-4E0F-A1EF-F5DE3ABC083B}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -36,6 +36,9 @@
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.ServiceModel">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -76,8 +79,8 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\EnumPropertyTypeUserControl.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\ScalarPropertyTypeUserControl.xaml">
       <SubType>Designer</SubType>
@@ -145,6 +148,10 @@
     <ProjectReference Include="..\..\Common\XMLParser\XMLParser.csproj">
       <Project>{F089C260-6BFA-48B3-8BBB-1F4B5F610829}</Project>
       <Name>XMLParser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ClientDomoService\ClientDomoService.csproj">
+      <Project>{F8929A37-AD5F-49BB-87BD-9AAE587072CD}</Project>
+      <Name>ClientDomoService</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

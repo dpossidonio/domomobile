@@ -20,10 +20,13 @@ namespace Main.UserControls
     /// </summary>
     public partial class VectorPropertyTypeUserControl : UserControl
     {
+        public Context CurrentContext { get; set; }
+
         public VectorValueType VectorValueType { get; set; }
 
-        public VectorPropertyTypeUserControl(Property vectorValueType)
+        public VectorPropertyTypeUserControl(Context context, Property vectorValueType)
         {
+            CurrentContext = context;
             VectorValueType = (VectorValueType)(vectorValueType.Type.ValueType);
             this.DataContext = this;
             InitializeComponent();

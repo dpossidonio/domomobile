@@ -1,8 +1,10 @@
-﻿<UserControl x:Class="Main.UserControls.EnumPropertyType"
+﻿<UserControl x:Class="Main.UserControls.EnumPropertyTypeUserControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <StackPanel>
-        <TextBlock>Enumerado</TextBlock>
-        <ComboBox ItemsSource="{Binding Items}" DisplayMemberPath="Description"/>
+        <StackPanel>
+            <TextBlock>Enumerado</TextBlock>
+            <ComboBox ItemsSource="{Binding Items}" DisplayMemberPath="Description"/>
+        </StackPanel>
     </StackPanel>
 </UserControl>
