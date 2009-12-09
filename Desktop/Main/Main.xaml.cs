@@ -18,6 +18,7 @@ using DomoMobile.Common;
 using System.Collections.ObjectModel;
 using System.IO;
 using PDA;
+using Main.ServiceProxy;
 
 namespace Main
 {
@@ -81,12 +82,8 @@ namespace Main
         public string Get(int RefProperty)
         {
             var service = new DomoServiceClient();
-            
-            return service.Get(
-                GetToken(),
-                CurrentContext.CurrentHouse.ID,
-                CurrentContext.CurrentDevice.ID,
-                RefProperty);
+
+            return service.Get(CurrentContext.CurrentUser, CurrentContext.CurrentHouse.ID, CurrentContext.CurrentDevice.ID, RefProperty);
         }
 
         private object _windowContent;

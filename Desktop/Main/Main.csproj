@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{3A7EEBE3-85DC-4E0F-A1EF-F5DE3ABC083B}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -36,6 +36,9 @@
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.ServiceModel">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
@@ -103,6 +106,11 @@
     <Compile Include="PropertyTypePopup.xaml.cs">
       <DependentUpon>PropertyTypePopup.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Service References\ServiceProxy\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\EnumPropertyTypeUserControl.xaml.cs">
       <DependentUpon>EnumPropertyTypeUserControl.xaml</DependentUpon>
     </Compile>
@@ -133,11 +141,17 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="ClassDiagram1.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Service References\ServiceProxy\DomoService.wsdl" />
+    <None Include="Service References\ServiceProxy\DomoService.xsd" />
+    <None Include="Service References\ServiceProxy\DomoService1.wsdl" />
+    <None Include="Service References\ServiceProxy\DomoService1.xsd" />
+    <None Include="Service References\ServiceProxy\DomoService2.xsd" />
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
@@ -149,15 +163,22 @@
       <Project>{F089C260-6BFA-48B3-8BBB-1F4B5F610829}</Project>
       <Name>XMLParser</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ClientDomoService\ClientDomoService.csproj">
-      <Project>{F8929A37-AD5F-49BB-87BD-9AAE587072CD}</Project>
-      <Name>ClientDomoService</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Casa1.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Service References\ServiceProxy\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\ServiceProxy\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\ServiceProxy\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

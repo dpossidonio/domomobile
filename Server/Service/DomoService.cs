@@ -132,6 +132,7 @@ namespace Service
         /// 
         public string Get(string Token, int HouseId, int RefDevice, int RefProperty)
         {
+            Console.WriteLine("Get(Token {0}, HouseId {1},RefDevice {2},RefProperty {3})", Token, HouseId, RefDevice, RefProperty);
             int userAccessLevel = UserAccessLevel(Token, HouseId);
             Console.WriteLine("User access level is :" + userAccessLevel);
             var dev = Houses[HouseId].Devices.First(x => x.ID == RefDevice);

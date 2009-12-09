@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="08e124a5-3d0e-4db2-a806-ef05942aec19" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://192.168.0.15:8000/DomoService?wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="DomoService.xsd" MetadataType="Schema" ID="f5fc0dca-8213-4000-a406-cbfd65ed6aa9" SourceId="1" SourceUrl="http://192.168.0.15:8000/DomoService?xsd=xsd1" />
+    <MetadataFile FileName="DomoService.wsdl" MetadataType="Wsdl" ID="a08ecbd3-24a2-4eb5-9d99-eb8bb92ee519" SourceId="1" SourceUrl="http://192.168.0.15:8000/DomoService?wsdl" />
+    <MetadataFile FileName="DomoService1.wsdl" MetadataType="Wsdl" ID="31164e29-2ee0-411f-b319-e3cef7c7186b" SourceId="1" SourceUrl="http://192.168.0.15:8000/DomoService?wsdl=wsdl0" />
+    <MetadataFile FileName="DomoService1.xsd" MetadataType="Schema" ID="123dc098-5066-41d4-b51b-c82a9d884d72" SourceId="1" SourceUrl="http://192.168.0.15:8000/DomoService?xsd=xsd0" />
+    <MetadataFile FileName="DomoService2.xsd" MetadataType="Schema" ID="744e00be-2bba-4604-b90e-797d45cd7dc3" SourceId="1" SourceUrl="http://192.168.0.15:8000/DomoService?xsd=xsd2" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

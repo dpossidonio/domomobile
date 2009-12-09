@@ -64,7 +64,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\Model\Model.csproj">
+    <ProjectReference Include="..\Model\Model.csproj">
       <Project>{ED15D343-2308-42C3-AC34-EED994774040}</Project>
       <Name>Model</Name>
     </ProjectReference>
