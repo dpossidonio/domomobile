@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:tns="http://DomoMobile.com" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" targetNamespace="http://DomoMobile.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://DomoMobile.com/Imports">
+      <xsd:import schemaLocation="http://192.168.0.15:8000/DomoService?xsd=xsd0" namespace="http://DomoMobile.com" />
+      <xsd:import schemaLocation="http://192.168.0.15:8000/DomoService?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://192.168.0.15:8000/DomoService?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IDomoService_Echo_InputMessage">
+    <wsdl:part name="parameters" element="tns:Echo" />
+  </wsdl:message>
+  <wsdl:message name="IDomoService_Echo_OutputMessage">
+    <wsdl:part name="parameters" element="tns:EchoResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDomoService_Login_InputMessage">
+    <wsdl:part name="parameters" element="tns:Login" />
+  </wsdl:message>
+  <wsdl:message name="IDomoService_Login_OutputMessage">
+    <wsdl:part name="parameters" element="tns:LoginResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDomoService_GetHouses_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetHouses" />
+  </wsdl:message>
+  <wsdl:message name="IDomoService_GetHouses_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetHousesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDomoService_GetHouseDescription_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetHouseDescription" />
+  </wsdl:message>
+  <wsdl:message name="IDomoService_GetHouseDescription_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetHouseDescriptionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDomoService_Set_InputMessage">
+    <wsdl:part name="parameters" element="tns:Set" />
+  </wsdl:message>
+  <wsdl:message name="IDomoService_Set_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDomoService_Get_InputMessage">
+    <wsdl:part name="parameters" element="tns:Get" />
+  </wsdl:message>
+  <wsdl:message name="IDomoService_Get_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IDomoService">
+    <wsdl:operation name="Echo">
+      <wsdl:input wsaw:Action="http://DomoMobile.com/IDomoService/Echo" message="tns:IDomoService_Echo_InputMessage" />
+      <wsdl:output wsaw:Action="http://DomoMobile.com/IDomoService/EchoResponse" message="tns:IDomoService_Echo_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Login">
+      <wsdl:input wsaw:Action="http://DomoMobile.com/IDomoService/Login" message="tns:IDomoService_Login_InputMessage" />
+      <wsdl:output wsaw:Action="http://DomoMobile.com/IDomoService/LoginResponse" message="tns:IDomoService_Login_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetHouses">
+      <wsdl:input wsaw:Action="http://DomoMobile.com/IDomoService/GetHouses" message="tns:IDomoService_GetHouses_InputMessage" />
+      <wsdl:output wsaw:Action="http://DomoMobile.com/IDomoService/GetHousesResponse" message="tns:IDomoService_GetHouses_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetHouseDescription">
+      <wsdl:input wsaw:Action="http://DomoMobile.com/IDomoService/GetHouseDescription" message="tns:IDomoService_GetHouseDescription_InputMessage" />
+      <wsdl:output wsaw:Action="http://DomoMobile.com/IDomoService/GetHouseDescriptionResponse" message="tns:IDomoService_GetHouseDescription_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Set">
+      <wsdl:input wsaw:Action="http://DomoMobile.com/IDomoService/Set" message="tns:IDomoService_Set_InputMessage" />
+      <wsdl:output wsaw:Action="http://DomoMobile.com/IDomoService/SetResponse" message="tns:IDomoService_Set_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Get">
+      <wsdl:input wsaw:Action="http://DomoMobile.com/IDomoService/Get" message="tns:IDomoService_Get_InputMessage" />
+      <wsdl:output wsaw:Action="http://DomoMobile.com/IDomoService/GetResponse" message="tns:IDomoService_Get_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

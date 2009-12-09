@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using TestProxy.ServiceProxy;
 
 namespace TestProxy
 {
@@ -19,8 +20,9 @@ namespace TestProxy
                 Binding binding = new BasicHttpBinding();
                 EndpointAddress remoteAddress = new EndpointAddress("http://192.168.0.15:8000/DomoService");
 
-                var Client = new DomoServiceClient("BasicHttpBinding_IDomoService");
+                var Client = new DomoServiceClient();
                 Client.Echo();
+                Console.WriteLine(Client.GetHouseDescription("David", 1));
             }
             catch (Exception ex)
             {
