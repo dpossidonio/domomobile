@@ -21,13 +21,16 @@ namespace Main.UserControls
     /// </summary>
     public partial class ScalarPropertyTypeUserControl : UserControl, INotifyPropertyChanged
     {
+        public Context CurrentContext { get; set; }
+
         public ScalarPropertyTypeUserControl()
         {
             InitializeComponent();
         }
 
-        public ScalarPropertyTypeUserControl(Property scalarPropertyType)
+        public ScalarPropertyTypeUserControl(Context context, Property scalarPropertyType)
         {
+            CurrentContext = context;
             this.DataContext = this;
             ScalarPropertyType = (ScalarValueType)(scalarPropertyType.Type.ValueType);
 
