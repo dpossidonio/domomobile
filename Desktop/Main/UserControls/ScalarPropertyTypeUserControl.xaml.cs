@@ -19,25 +19,37 @@ namespace Main.UserControls
     /// <summary>
     /// Interaction logic for ScalarPropertyTypeUserControl.xaml
     /// </summary>
-    public partial class ScalarPropertyTypeUserControl : UserControl, INotifyPropertyChanged
+    public partial class ScalarPropertyTypeUserControl : UserControl, INotifyPropertyChanged, IPropertyEditor
     {
+        private int _value;
+        public int Value
+        {
+            get { return _value; }
+            set { _value = value; Notify("Value");}
+        }
+
         public Context CurrentContext { get; set; }
 
         public ScalarPropertyTypeUserControl()
         {
             InitializeComponent();
+            
         }
 
         public ScalarPropertyTypeUserControl(Context context, Property scalarPropertyType)
         {
+            PropertyType = scalarPropertyType.Type;
+            ScalarValue = ((ScalarValueType) PropertyType.ValueType);
             CurrentContext = context;
             this.DataContext = this;
-            ScalarPropertyType = (ScalarValueType)(scalarPropertyType.Type.ValueType);
+            string val = Window1.ServiceProvider.Get(PropertyType.ID);
+            Value = int.Parse(val);
 
             InitializeComponent();
         }
 
-        public ScalarValueType ScalarPropertyType { get; set; }
+        public PropertyType PropertyType { get; set; }
+        public ScalarValueType ScalarValue { get; set; }
 
         #region INotifyPropertyChanged Members
 
@@ -49,6 +61,11 @@ namespace Main.UserControls
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propname));
+        }
+
+        public void SaveChanges()
+        {
+            Window1.ServiceProvider.Set(PropertyType.ID, Value.ToString());
         }
     }
 }

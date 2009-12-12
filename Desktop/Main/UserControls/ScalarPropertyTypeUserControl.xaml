@@ -3,6 +3,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <StackPanel>
         <TextBlock>Escalar</TextBlock>
-        <Slider Interval="{Binding ScalarPropertyType.TypeOfValue.Step}" Maximum="{Binding ScalarPropertyType.TypeOfValue.MaxValue}" Minimum="{Binding ScalarPropertyType.TypeOfValue.MinValue}" />
+        <Slider 
+            Interval="{Binding ScalarValue.TypeOfValue.Step}" 
+            Maximum="{Binding ScalarValue.TypeOfValue.MaxValue}" 
+            Minimum="{Binding ScalarValue.TypeOfValue.MinValue}" 
+            Value="{Binding Value}"
+            />
+        <TextBlock Text="{Binding Value}" />
     </StackPanel>
 </UserControl>

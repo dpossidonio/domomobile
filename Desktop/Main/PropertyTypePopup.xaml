@@ -9,8 +9,8 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             
-            <Button Grid.Column="0" x:Name="okButton" Content="Cancel" Click="okButton_Click" />
-            <Button Grid.Column="1" x:Name="cancelButton" Content="Ok" Click="cancelButton_Click"/>
+            <Button Grid.Column="1" x:Name="okButton" Content="OK" Click="okButton_Click" />
+            <Button Grid.Column="0" x:Name="cancelButton" Content="Cancel" Click="cancelButton_Click"/>
         </Grid>
         <StackPanel x:Name="placeholder"></StackPanel>
     </DockPanel>

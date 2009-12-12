@@ -4,7 +4,7 @@
     <StackPanel>
         <StackPanel>
             <TextBlock>Enumerado</TextBlock>
-            <ComboBox ItemsSource="{Binding Items}" DisplayMemberPath="Description"/>
+            <ComboBox ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}" DisplayMemberPath="Description"/>
         </StackPanel>
     </StackPanel>
 </UserControl>

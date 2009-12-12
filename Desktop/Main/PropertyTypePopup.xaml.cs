@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.ComponentModel;
+using Main.UserControls;
 
 namespace Main
 {
@@ -19,8 +20,8 @@ namespace Main
     /// </summary>
     public partial class PropertyTypePopup : Window, INotifyPropertyChanged
     {
-        private object _windowContent;
-        public object WindowContent
+        private IPropertyEditor _windowContent;
+        public IPropertyEditor WindowContent
         {
             get { return _windowContent; }
             set { _windowContent = value; Notify("WindowContent"); }
@@ -29,7 +30,7 @@ namespace Main
         public PropertyTypePopup(Control popup)
         {
             DataContext = this;
-            WindowContent = popup;
+            WindowContent = popup as IPropertyEditor;
             InitializeComponent();
 
             placeholder.Children.Clear();
@@ -49,6 +50,7 @@ namespace Main
 
         private void okButton_Click(object sender, RoutedEventArgs e)
         {
+            WindowContent.SaveChanges();
             this.Close();
         }
 
