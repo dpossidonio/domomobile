@@ -185,7 +185,7 @@
 
     <DeviceType ID="6" Name="Lâmpada-Casual">
       <PropertyTypeList>
-        <PropertyType ID="7" Name="EstadoLigadoDesligado" AccessMode="RW" ValueType="ENUM" RefValueType="1" Value="0"/>
+        <PropertyType ID="1" Name="EstadoLigadoDesligado" AccessMode="RW" ValueType="ENUM" RefValueType="1" Value="0"/>
       </PropertyTypeList>
     </DeviceType>
 
@@ -197,7 +197,7 @@
 
     <DeviceType ID="8" Name="Maquina de Lavar Roupa">
       <PropertyTypeList>
-        <PropertyType ID="8" Name="EstadoLigadoDesligado" AccessMode="RW" ValueType="ENUM" RefValueType="1" Value="0"/>
+        <PropertyType ID="1" Name="EstadoLigadoDesligado" AccessMode="RW" ValueType="ENUM" RefValueType="1" Value="0"/>
         <PropertyType ID="9" Name="EstadoLavagem" AccessMode="RO" ValueType="ENUM" RefValueType="6" Value="0"/>
         <PropertyType ID="10" Name="Programa" AccessMode="RW" ValueType="ENUM" RefValueType="4" Value="3"/>
         <PropertyType ID="11" Name="Graus" AccessMode="RW" ValueType="ENUM" RefValueType="5" Value="2"/>

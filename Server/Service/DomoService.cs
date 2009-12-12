@@ -86,10 +86,13 @@ namespace Service
         /// </returns>
         public int Set(string Token, int HouseId, int RefDevice, int RefProperty, string Value)
         {
+        
             int userAccessLevel = UserAccessLevel(Token, HouseId);
-            Console.WriteLine("User access level is :"+userAccessLevel);
             var dev = Houses[HouseId].Devices.First(x => x.ID == RefDevice);
             var prop = dev.Properties.First(x => x.Type.ID == RefProperty);
+
+            Console.WriteLine("SET : Device:{0} Property:{1} Value {2}.", dev.Name,prop.Type.Name,Value);
+
             var blockLevel = 0;
             if (dev.CommandBlockID > 0)
                 blockLevel = Houses[HouseId].Users.First(x => x.UserID.Equals(dev.CommandBlockID)).AcessLevel;
@@ -132,12 +135,12 @@ namespace Service
         /// 
         public string Get(string Token, int HouseId, int RefDevice, int RefProperty)
         {
-            Console.WriteLine("Get(Token {0}, HouseId {1},RefDevice {2},RefProperty {3})", Token, HouseId, RefDevice, RefProperty);
             int userAccessLevel = UserAccessLevel(Token, HouseId);
-            Console.WriteLine("User access level is :" + userAccessLevel);
             var dev = Houses[HouseId].Devices.First(x => x.ID == RefDevice);
             var prop = dev.Properties.First(x => x.Type.ID == RefProperty);
             var blockLevel = 0;
+
+            Console.WriteLine("GET : Device:{0} Property:{1}.", dev.Name, prop.Type.Name);
 
             if (dev.MonitorizationBlockID > 0)
                 blockLevel = Houses[HouseId].Users.First(x => x.UserID.Equals(dev.MonitorizationBlockID)).AcessLevel;
