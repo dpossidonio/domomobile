@@ -1,45 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
-using Main.ViewModels;
+using System.IO;
+using System.Windows;
 using System.Xml.Linq;
 using DomoMobile.Common;
-using System.Collections.ObjectModel;
-using System.IO;
-using PDA;
 using Main.ServiceProxy;
+using Main.ViewModels;
+using PDA;
 
 namespace Main
 {
-    public class Context
-    {
-        public string CurrentUser { get; set; }
-        public House CurrentHouse { get; set; }
-        public Device CurrentDevice { get; set; }
-    }
-
-    public interface IServiceProvider
-    {
-        string[] GetHouses();
-
-        string GetHouseDescription(int HouseId);
-
-        int Set(int RefProperty, string Value);
-
-        string Get(int RefProperty);
-    }
-
     /// <summary>
     /// Interaction logic for Window1.xaml
     /// </summary>
@@ -53,37 +25,36 @@ namespace Main
             private set;
         }
 
+        private IDomoService _service;
+        public IDomoService Service
+        {
+            get { return _service ?? (_service = new DomoServiceClient()); }
+            set { _service = value; }
+        }
+
         public string[] GetHouses()
         {
-            var service = new DomoServiceClient();
-
-            return service.GetHouses(GetToken());
+            return Service.GetHouses(GetToken());
         }
 
-        public string GetHouseDescription(int HouseId)
+        public string GetHouseDescription(int houseId)
         {
-            var service = new DomoServiceClient();
-
-            return service.GetHouseDescription(GetToken(), HouseId);
+            return Service.GetHouseDescription(GetToken(), houseId);
         }
 
-        public int Set(int RefProperty, string Value)
+        public int Set(int refProperty, string value)
         {
-            var service = new DomoServiceClient();
-
-            return service.Set(
+            return Service.Set(
                 GetToken(), 
                 CurrentContext.CurrentHouse.ID, 
                 CurrentContext.CurrentDevice.ID, 
-                RefProperty, 
-                Value);
+                refProperty, 
+                value);
         }
 
-        public string Get(int RefProperty)
+        public string Get(int refProperty)
         {
-            var service = new DomoServiceClient();
-
-            return service.Get(CurrentContext.CurrentUser, CurrentContext.CurrentHouse.ID, CurrentContext.CurrentDevice.ID, RefProperty);
+            return Service.Get(CurrentContext.CurrentUser, CurrentContext.CurrentHouse.ID, CurrentContext.CurrentDevice.ID, refProperty);
         }
 
         private object _windowContent;
@@ -99,7 +70,7 @@ namespace Main
             ServiceProvider = this;
             InitializeComponent();
 
-            this.DataContext = this;
+            DataContext = this;
         }
 
         protected override void OnInitialized(EventArgs e)
@@ -107,8 +78,11 @@ namespace Main
             base.OnInitialized(e);
 
             var house = ReadHouseConfiguration("Casa1.xml");
-            var selectScreen = new SelectScreenViewModel(CurrentContext);
-            selectScreen.Items = new ObservableCollection<SelectionItem>();
+            var selectScreen = new SelectScreenViewModel(CurrentContext)
+                                   {
+                                       Items = new ObservableCollection<SelectionItem>()
+                                   };
+
             selectScreen.SetContent(
                 new List<SelectionItem>() { 
                     new HouseSelectionItem(CurrentContext, null) { 
@@ -141,7 +115,7 @@ namespace Main
 
         private string GetToken()
         {
-            return String.Empty;
+            return CurrentContext.CurrentUser;
         }
     }
 }

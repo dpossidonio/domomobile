@@ -20,8 +20,9 @@ namespace Main.UserControls
     /// <summary>
     /// Interaction logic for ScalarPropertyTypeUserControl.xaml
     /// </summary>
-    public partial class EnumPropertyTypeUserControl : UserControl, INotifyPropertyChanged
+    public partial class EnumPropertyTypeUserControl : UserControl, INotifyPropertyChanged, IPropertyEditor
     {
+
         public Context CurrentContext { get; set; }
 
         public EnumPropertyTypeUserControl()
@@ -31,9 +32,9 @@ namespace Main.UserControls
 
         protected override void OnInitialized(EventArgs e)
         {
-            base.OnInitialized(e);
-
-            Window1.ServiceProvider.Get(EnumPropertyType.ID);
+            base.OnInitialized(e);       
+            string val = Window1.ServiceProvider.Get(PropertyType.ID);
+            SetSelectedItem(val);
         }
 
         private ObservableCollection<Enumerated> _items;
@@ -47,14 +48,15 @@ namespace Main.UserControls
         public EnumPropertyTypeUserControl(Context context, Property enumPropertyType)
         {
             CurrentContext = context;
-            this.DataContext = this;
-            EnumPropertyType = (EnumeratedValueType)(enumPropertyType.Type.ValueType);
-            Items = new ObservableCollection<Enumerated>(EnumPropertyType.TypeOfValue);
+            DataContext = this;
+            PropertyType = (PropertyType)(enumPropertyType.Type);
+            Items = new ObservableCollection<Enumerated>(((EnumeratedValueType)(PropertyType.ValueType)).TypeOfValue);
 
             InitializeComponent();
         }
 
-        public EnumeratedValueType EnumPropertyType { get; set; }
+       
+        public PropertyType PropertyType { get; set; }
 
         #region INotifyPropertyChanged Members
 
@@ -66,6 +68,31 @@ namespace Main.UserControls
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propname));
+        }
+
+        private Enumerated _selectedItem;
+        public Enumerated SelectedItem
+        {
+            get { return _selectedItem; }
+            set { _selectedItem = value; Notify("SelectedItem");}
+        }
+
+        private void SetSelectedItem(string value)
+        {
+            foreach (var item in Items)
+            {
+                if ((item as Enumerated).Value.Equals(value))
+                {
+                    SelectedItem = item;
+                    break;
+                }
+
+            }
+        }
+
+        public void SaveChanges()
+        {
+            Window1.ServiceProvider.Set(PropertyType.ID, SelectedItem.Value);
         }
     }
 }

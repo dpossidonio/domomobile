@@ -103,6 +103,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Context.cs" />
+    <Compile Include="IServiceProvider.cs" />
     <Compile Include="PropertyTypePopup.xaml.cs">
       <DependentUpon>PropertyTypePopup.xaml</DependentUpon>
     </Compile>
@@ -114,12 +116,14 @@
     <Compile Include="UserControls\EnumPropertyTypeUserControl.xaml.cs">
       <DependentUpon>EnumPropertyTypeUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\IPropertyEditor.cs" />
     <Compile Include="UserControls\ScalarPropertyTypeUserControl.xaml.cs">
       <DependentUpon>ScalarPropertyTypeUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\VectorPropertyTypeUserControl.xaml.cs">
       <DependentUpon>VectorPropertyTypeUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\AggregatorSelectionItems.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="Utils\DelegateCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -135,6 +139,14 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="ViewModels\ContextualizedViewModel.cs" />
+    <Compile Include="ViewModels\DeviceSelectionItem.cs" />
+    <Compile Include="ViewModels\DivisionSelectionItem.cs" />
+    <Compile Include="ViewModels\FloorSelectionItem.cs" />
+    <Compile Include="ViewModels\HouseSelectionItem.cs" />
+    <Compile Include="ViewModels\PropertySelectionItem.cs" />
+    <Compile Include="ViewModels\PropertyTypeUserControlFactory.cs" />
+    <Compile Include="ViewModels\SelectionItem.cs" />
     <Compile Include="ViewModels\SelectScreenViewModel.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
