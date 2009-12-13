@@ -34,8 +34,8 @@ namespace PDA
             SelectedHouse = -1;
             InitializeComponent();
             ////Apagar
-            //IpTextBox.Text = "192.168.0.15";
-            IpTextBox.Text = "169.254.74.74";
+            IpTextBox.Text = "192.168.0.15";
+            //IpTextBox.Text = "169.254.74.74";
             user.Text = "David";
             pass.Text = "123";
             ///
