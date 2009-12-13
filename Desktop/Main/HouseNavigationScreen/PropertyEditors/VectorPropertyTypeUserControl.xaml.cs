@@ -29,17 +29,24 @@ namespace Main.UserControls
                 Notify("Value"); }
         }
 
+        public VectorPropertyTypeUserControl()
+        {
+            InitializeComponent();
+        }
+
         public Context CurrentContext { get; set; }
+        public IServiceManager ServiceManager { get; set; }
 
         public PropertyType PropertyType { get; set; }
 
-        public VectorPropertyTypeUserControl(Context context, Property vectorValueType)
+        public VectorPropertyTypeUserControl(Context context, IServiceManager service, Property vectorValueType)
         {
             CurrentContext = context;
+            ServiceManager = service;
             PropertyType = (PropertyType)(vectorValueType.Type);
             this.DataContext = this;
             InitializeComponent();
-            string val = Window1.ServiceProvider.Get(PropertyType.ID);
+            string val = ServiceManager.Get(PropertyType.ID);
             Value = val;
         }
 
@@ -59,7 +66,7 @@ namespace Main.UserControls
 
         public void SaveChanges()
         {
-            Window1.ServiceProvider.Set(PropertyType.ID, Value);
+            ServiceManager.Set(PropertyType.ID, Value);
         }
 
         #endregion

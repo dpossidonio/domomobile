@@ -5,8 +5,8 @@ namespace Main.ViewModels
 {
     public class DeviceSelectionItem : AggregatorSelectionItems
     {
-        public DeviceSelectionItem(Context context, Device device, AggregatorSelectionItems parent)
-            : base(context, parent)
+        public DeviceSelectionItem(Context context, IServiceManager service, Device device, AggregatorSelectionItems parent)
+            : base(context, service, parent)
         {
             Device = device;
         }
@@ -18,7 +18,7 @@ namespace Main.ViewModels
             IList<SelectionItem> items = new List<SelectionItem>();
             foreach (var property in Device.Properties)
             {
-                items.Add(new PropertySelectionItem(CurrentContext, property, this));
+                items.Add(new PropertySelectionItem(CurrentContext, ServiceManager, property, this));
             }
             return items;
         }
