@@ -15,21 +15,41 @@ namespace Main
     /// <summary>
     /// Interaction logic for Window1.xaml
     /// </summary>
-    public partial class Window1 : Window, INotifyPropertyChanged, IServiceProvider
+    public partial class Window1 : Window, INotifyPropertyChanged, IServiceManager, IWindowManager
     {
         public Context CurrentContext { get; set; }
 
-        public static IServiceProvider ServiceProvider
-        {
-            get;
-            private set;
-        }
+        #region IServiceManager
 
         private IDomoService _service;
         public IDomoService Service
         {
-            get { return _service ?? (_service = new DomoServiceClient()); }
-            set { _service = value; }
+            get
+            {
+                if (_service == null)
+                    _service = GetServiceInstance();
+                return _service;
+            }
+            protected set { 
+                _service = value; 
+            }
+        }
+
+        private IDomoService GetServiceInstance()
+        {
+            if(String.IsNullOrEmpty(CurrentContext.Endpoint))
+            {
+                return new DomoServiceClient();
+            }
+            else
+            {
+                return new DomoServiceClient("BasicHttpBinding_IDomoService", CurrentContext.Endpoint);
+            }
+        }
+
+        private string GetToken()
+        {
+            return CurrentContext.CurrentUser;
         }
 
         public string[] GetHouses()
@@ -45,10 +65,10 @@ namespace Main
         public int Set(int refProperty, string value)
         {
             return Service.Set(
-                GetToken(), 
-                CurrentContext.CurrentHouse.ID, 
-                CurrentContext.CurrentDevice.ID, 
-                refProperty, 
+                GetToken(),
+                CurrentContext.CurrentHouse.ID,
+                CurrentContext.CurrentDevice.ID,
+                refProperty,
                 value);
         }
 
@@ -56,6 +76,36 @@ namespace Main
         {
             return Service.Get(CurrentContext.CurrentUser, CurrentContext.CurrentHouse.ID, CurrentContext.CurrentDevice.ID, refProperty);
         }
+
+        public bool Login(string username, string password)
+        {
+            return Service.Login(username, password);
+        }
+
+        #endregion
+
+        #region IWindowManager
+
+        public void ChangeScreen<T>() where T : Screen
+        {
+            var screen = Activator.CreateInstance(typeof (T), CurrentContext, this, this);
+
+            WindowContent = screen;
+        }
+
+        #endregion
+
+        #region INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void Notify(string propname)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(propname));
+        }
+
+        #endregion
 
         private object _windowContent;
         public object WindowContent
@@ -67,55 +117,30 @@ namespace Main
         public Window1()
         {
             CurrentContext = new Context();
-            ServiceProvider = this;
             InitializeComponent();
-
             DataContext = this;
+            Service = null;
         }
 
         protected override void OnInitialized(EventArgs e)
         {
             base.OnInitialized(e);
 
-            var house = ReadHouseConfiguration("Casa1.xml");
-            var selectScreen = new SelectScreenViewModel(CurrentContext)
-                                   {
-                                       Items = new ObservableCollection<SelectionItem>()
-                                   };
+            var loginScreen = new LoginScreenViewModel(CurrentContext, this, this);
 
-            selectScreen.SetContent(
-                new List<SelectionItem>() { 
-                    new HouseSelectionItem(CurrentContext, null) { 
-                        House = house 
-                    }  
-                }, null);
+            //var selectScreen = new SelectScreenViewModel(CurrentContext)
+            //                       {
+            //                           Items = new ObservableCollection<SelectionItem>()
+            //                       };
 
-            WindowContent = selectScreen;
-        }
+            //selectScreen.SetContent(
+            //    new List<SelectionItem>() { 
+            //        new HouseSelectionItem(CurrentContext, null) { 
+            //            House = house 
+            //        }  
+            //    }, null);
 
-        private House ReadHouseConfiguration(string filename)
-        {
-            Parser p = new Parser();
-            //string path = p.GetXmlFilePath(filename);
-            FileInfo f = new FileInfo(filename);
-            var doc = XDocument.Load(f.FullName);
-            return p.getHouse(doc);
-        }
-        #region INotifyPropertyChanged Members
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion
-
-        public void Notify(string propname)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propname));
-        }
-
-        private string GetToken()
-        {
-            return CurrentContext.CurrentUser;
+            WindowContent = loginScreen;
         }
     }
 }

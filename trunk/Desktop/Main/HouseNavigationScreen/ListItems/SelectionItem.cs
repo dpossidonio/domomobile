@@ -13,8 +13,8 @@ namespace Main.ViewModels
             set { _actionCommand = value; Notify("ActionCommand"); }
         }
 
-        public SelectionItem(Context context, AggregatorSelectionItems parent)
-            : base(context)
+        public SelectionItem(Context context, IServiceManager service, AggregatorSelectionItems parent)
+            : base(context, service)
         {
             Parent = parent;
         }

@@ -69,7 +69,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="DataTemplates\SelectionItemDataTemplate.xaml">
+    <Page Include="HouseNavigationScreen\SelectionItemDataTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="HouseSelectionScreen\HouseSelectionVMDataTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LoginScreen\LoginScreenVMDataTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -77,19 +85,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="PropertyTypePopup.xaml">
+    <Page Include="HouseNavigationScreen\PropertyEditors\PropertyTypePopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\EnumPropertyTypeUserControl.xaml">
+    <Page Include="HouseNavigationScreen\PropertyEditors\EnumPropertyTypeUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\ScalarPropertyTypeUserControl.xaml">
+    <Page Include="HouseNavigationScreen\PropertyEditors\ScalarPropertyTypeUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\VectorPropertyTypeUserControl.xaml">
+    <Page Include="HouseNavigationScreen\PropertyEditors\VectorPropertyTypeUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -104,27 +112,30 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context.cs" />
-    <Compile Include="IServiceProvider.cs" />
-    <Compile Include="PropertyTypePopup.xaml.cs">
+    <Compile Include="IServiceManager.cs" />
+    <Compile Include="HouseNavigationScreen\PropertyEditors\PropertyTypePopup.xaml.cs">
       <DependentUpon>PropertyTypePopup.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BaseClasses\Screen.cs" />
+    <Compile Include="IWindowManager.cs" />
     <Compile Include="Service References\ServiceProxy\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\EnumPropertyTypeUserControl.xaml.cs">
+    <Compile Include="HouseNavigationScreen\PropertyEditors\EnumPropertyTypeUserControl.xaml.cs">
       <DependentUpon>EnumPropertyTypeUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\IPropertyEditor.cs" />
-    <Compile Include="UserControls\ScalarPropertyTypeUserControl.xaml.cs">
+    <Compile Include="HouseNavigationScreen\IPropertyEditor.cs" />
+    <Compile Include="HouseNavigationScreen\PropertyEditors\ScalarPropertyTypeUserControl.xaml.cs">
       <DependentUpon>ScalarPropertyTypeUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\VectorPropertyTypeUserControl.xaml.cs">
+    <Compile Include="HouseNavigationScreen\PropertyEditors\VectorPropertyTypeUserControl.xaml.cs">
       <DependentUpon>VectorPropertyTypeUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\AggregatorSelectionItems.cs" />
-    <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="HouseSelectionScreen\HouseSelectionViewModel.cs" />
+    <Compile Include="HouseNavigationScreen\ListItems\AggregatorSelectionItems.cs" />
+    <Compile Include="BaseClasses\BaseViewModel.cs" />
     <Compile Include="Utils\DelegateCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -139,15 +150,16 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="ViewModels\ContextualizedViewModel.cs" />
-    <Compile Include="ViewModels\DeviceSelectionItem.cs" />
-    <Compile Include="ViewModels\DivisionSelectionItem.cs" />
-    <Compile Include="ViewModels\FloorSelectionItem.cs" />
-    <Compile Include="ViewModels\HouseSelectionItem.cs" />
-    <Compile Include="ViewModels\PropertySelectionItem.cs" />
-    <Compile Include="ViewModels\PropertyTypeUserControlFactory.cs" />
-    <Compile Include="ViewModels\SelectionItem.cs" />
-    <Compile Include="ViewModels\SelectScreenViewModel.cs" />
+    <Compile Include="BaseClasses\ContextualizedViewModel.cs" />
+    <Compile Include="HouseNavigationScreen\ListItems\DeviceSelectionItem.cs" />
+    <Compile Include="HouseNavigationScreen\ListItems\DivisionSelectionItem.cs" />
+    <Compile Include="HouseNavigationScreen\ListItems\FloorSelectionItem.cs" />
+    <Compile Include="HouseNavigationScreen\ListItems\HouseSelectionItem.cs" />
+    <Compile Include="HouseNavigationScreen\ListItems\PropertySelectionItem.cs" />
+    <Compile Include="LoginScreen\LoginScreenViewModel.cs" />
+    <Compile Include="HouseNavigationScreen\PropertyTypeUserControlFactory.cs" />
+    <Compile Include="HouseNavigationScreen\ListItems\SelectionItem.cs" />
+    <Compile Include="HouseNavigationScreen\SelectScreenViewModel.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

@@ -6,7 +6,9 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="DataTemplates/SelectionItemDataTemplate.xaml" />
+                <ResourceDictionary Source="HouseNavigationScreen/SelectionItemDataTemplate.xaml" />
+                <ResourceDictionary Source="LoginScreen/LoginScreenVMDataTemplate.xaml" />
+                <ResourceDictionary Source="HouseSelectionScreen/HouseSelectionVMDataTemplate.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>

@@ -13,8 +13,8 @@ namespace Main.ViewModels
                 ItemClicked(items, parent);
         }
 
-        public AggregatorSelectionItems(Context context, AggregatorSelectionItems parent)
-            : base(context, parent)
+        public AggregatorSelectionItems(Context context, IServiceManager service, AggregatorSelectionItems parent)
+            : base(context, service, parent)
         {
             var call = new Action(delegate()
                                       {

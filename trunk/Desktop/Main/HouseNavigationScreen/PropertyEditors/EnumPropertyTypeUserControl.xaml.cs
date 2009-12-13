@@ -22,8 +22,8 @@ namespace Main.UserControls
     /// </summary>
     public partial class EnumPropertyTypeUserControl : UserControl, INotifyPropertyChanged, IPropertyEditor
     {
-
         public Context CurrentContext { get; set; }
+        public IServiceManager ServiceManager { get; set; }
 
         public EnumPropertyTypeUserControl()
         {
@@ -33,7 +33,7 @@ namespace Main.UserControls
         protected override void OnInitialized(EventArgs e)
         {
             base.OnInitialized(e);       
-            string val = Window1.ServiceProvider.Get(PropertyType.ID);
+            string val = ServiceManager.Get(PropertyType.ID);
             SetSelectedItem(val);
         }
 
@@ -45,9 +45,10 @@ namespace Main.UserControls
 
         }
 
-        public EnumPropertyTypeUserControl(Context context, Property enumPropertyType)
+        public EnumPropertyTypeUserControl(Context context, IServiceManager service, Property enumPropertyType)
         {
             CurrentContext = context;
+            ServiceManager = service;
             DataContext = this;
             PropertyType = (PropertyType)(enumPropertyType.Type);
             Items = new ObservableCollection<Enumerated>(((EnumeratedValueType)(PropertyType.ValueType)).TypeOfValue);
@@ -92,7 +93,7 @@ namespace Main.UserControls
 
         public void SaveChanges()
         {
-            Window1.ServiceProvider.Set(PropertyType.ID, SelectedItem.Value);
+           ServiceManager.Set(PropertyType.ID, SelectedItem.Value);
         }
     }
 }

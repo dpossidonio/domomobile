@@ -5,8 +5,8 @@ namespace Main.ViewModels
 {
     public class FloorSelectionItem : AggregatorSelectionItems
     {
-        public FloorSelectionItem(Context context, Floor floor, AggregatorSelectionItems parent)
-            : base(context, parent)
+        public FloorSelectionItem(Context context, IServiceManager service, Floor floor, AggregatorSelectionItems parent)
+            : base(context, service, parent)
         {
             Floor = floor;
         }
@@ -18,7 +18,7 @@ namespace Main.ViewModels
             IList<SelectionItem> items = new List<SelectionItem>();
             foreach (var division in Floor.Divisions)
             {
-                items.Add(new DivisionSelectionItem(CurrentContext, division, this));
+                items.Add(new DivisionSelectionItem(CurrentContext, ServiceManager, division, this));
             }
             return items;
         }

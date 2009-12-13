@@ -5,8 +5,8 @@ namespace Main.ViewModels
 {
     public class DivisionSelectionItem : AggregatorSelectionItems
     {
-        public DivisionSelectionItem(Context context, Division division, AggregatorSelectionItems parent)
-            : base(context, parent)
+        public DivisionSelectionItem(Context context, IServiceManager service, Division division, AggregatorSelectionItems parent)
+            : base(context, service, parent)
         {
             Division = division;
         }
@@ -18,7 +18,7 @@ namespace Main.ViewModels
             IList<SelectionItem> items = new List<SelectionItem>();
             foreach (var device in Division.Devices)
             {
-                items.Add(new DeviceSelectionItem(CurrentContext, device, this));
+                items.Add(new DeviceSelectionItem(CurrentContext, ServiceManager, device, this));
             }
             return items;
         }

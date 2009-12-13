@@ -5,8 +5,8 @@ namespace Main.ViewModels
 {
     public class PropertySelectionItem : SelectionItem
     {
-        public PropertySelectionItem(Context context, Property property, AggregatorSelectionItems parent)
-            : base(context, parent)
+        public PropertySelectionItem(Context context, IServiceManager service, Property property, AggregatorSelectionItems parent)
+            : base(context, service, parent)
         {
             Property = property;
 
@@ -15,7 +15,7 @@ namespace Main.ViewModels
                     {
                         CurrentContext.CurrentPropertyType = Property.Type;
 
-                        var window = new PropertyTypePopup(PropertyTypeUserControlFactory.GetUserControl(context, Property));
+                        var window = new PropertyTypePopup(PropertyTypeUserControlFactory.GetUserControl(context, service, Property));
                         window.Show();
                     });
             ActionCommand = action;

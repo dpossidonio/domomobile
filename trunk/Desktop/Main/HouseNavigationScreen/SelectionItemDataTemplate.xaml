@@ -8,14 +8,17 @@
     </Style>
     
     <DataTemplate DataType="{x:Type vm:SelectScreenViewModel}">
-        <StackPanel>
-            <Button 
+        <DockPanel LastChildFill="True">
+            <Button DockPanel.Dock="Bottom" Content="Houses" Command="{Binding HousesCommand}" />
+            <StackPanel>
+                <Button 
                 Content="Topo" 
                 Command="{Binding GoUpCommand}" 
                 Background="BlanchedAlmond" 
                 Style="{StaticResource ButtonStyle}"/>
-            <ItemsControl ItemsSource="{Binding Items}" />
-        </StackPanel>
+                <ItemsControl ItemsSource="{Binding Items}" />
+            </StackPanel>
+        </DockPanel>
     </DataTemplate>
     
     <DataTemplate DataType="{x:Type vm:HouseSelectionItem}">

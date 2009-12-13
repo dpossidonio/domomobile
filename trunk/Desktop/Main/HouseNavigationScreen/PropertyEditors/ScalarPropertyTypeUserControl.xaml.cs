@@ -28,21 +28,22 @@ namespace Main.UserControls
             set { _value = value; Notify("Value");}
         }
 
-        public Context CurrentContext { get; set; }
-
         public ScalarPropertyTypeUserControl()
         {
             InitializeComponent();
-            
         }
 
-        public ScalarPropertyTypeUserControl(Context context, Property scalarPropertyType)
+        public Context CurrentContext { get; set; }
+        public IServiceManager ServiceManager { get; set; }
+
+        public ScalarPropertyTypeUserControl(Context context, IServiceManager service, Property scalarPropertyType)
         {
             PropertyType = scalarPropertyType.Type;
             ScalarValue = ((ScalarValueType) PropertyType.ValueType);
             CurrentContext = context;
+            ServiceManager = service;
             this.DataContext = this;
-            string val = Window1.ServiceProvider.Get(PropertyType.ID);
+            string val = ServiceManager.Get(PropertyType.ID);
             Value = int.Parse(val);
 
             InitializeComponent();
@@ -65,7 +66,7 @@ namespace Main.UserControls
 
         public void SaveChanges()
         {
-            Window1.ServiceProvider.Set(PropertyType.ID, Value.ToString());
+            ServiceManager.Set(PropertyType.ID, Value.ToString());
         }
     }
 }
