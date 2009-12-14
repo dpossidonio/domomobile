@@ -1,7 +1,4 @@
 ﻿
-
-
-
 Notas:
 
 Para correr o serviço é necessário configurar o acesso http pelo porto 8000

@@ -10,8 +10,6 @@ using System.Xml.Linq;
 using DomoMobile.Common;
 using System.ServiceModel;
 
-using SMC = System.ServiceModel.Channels;
-
 namespace PDA
 {
     public partial class Main : Form
@@ -33,150 +31,13 @@ namespace PDA
             state = 1;
             SelectedHouse = -1;
             InitializeComponent();
-            ////Apagar
+
             IpTextBox.Text = "192.168.0.15";
             //IpTextBox.Text = "169.254.74.74";
             user.Text = "David";
             pass.Text = "123";
-            ///
         }
 
-        private void Connect(String ip)
-        {
-
-            Cursor.Current = Cursors.WaitCursor;
-            try
-            {
-                SMC.Binding binding = DomoServiceClient.CreateDefaultBinding();
-                string remoteAddress = DomoServiceClient.EndpointAddress.Uri.ToString();
-                remoteAddress = remoteAddress.Replace("localhost", ip);
-                EndpointAddress endpoint = new EndpointAddress(remoteAddress);
-                Client = new DomoServiceClient(binding, endpoint);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            Cursor.Current = Cursors.Default;
-        }
-
-        private void callSet(string newValue)
-        {
-            try
-            {
-                var res = Client.Set(MyUsername, MyHouse.ID, MyDevice.ID, MyProperty.Type.ID, newValue);
-                switch (res)
-                {
-                    case 0: MessageBox.Show("Is not possible connect to device."); break;
-                    case 1: MyProperty.Value = newValue; break;
-                    case 2: MessageBox.Show("Permision denied."); break;
-                    case 3: MessageBox.Show("Read only Property."); break;
-                    default: break;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
-        private void callGet()
-        {
-            try
-            {
-                var res = Client.Get(MyUsername, MyHouse.ID, MyDevice.ID, MyProperty.Type.ID);
-                if (res.Length == 2 && res.Substring(0, 1).Equals("#"))
-                {
-                    var errorId = int.Parse(res.Substring(1));
-                    switch (errorId)
-                    {
-                        case 0: MessageBox.Show("Is not possible connect to device."); break;
-                        case 1: MessageBox.Show("Permision denied."); break;
-                        case 2: MessageBox.Show("Write only Property."); break;
-                        default: break;
-                    }
-                }
-                else
-                    MyProperty.Value = res;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
-        private bool callEcho()
-        {
-            bool res = false;
-            try
-            {
-                Client.Echo();
-                res = true;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            return res;
-        }
-
-        private string callGetHomeDescription(int SelectedHouse)
-        {
-            var house = "";
-            try
-            {
-                house = Client.GetHouseDescription(MyUsername, SelectedHouse);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            return house;
-        }
-
-        private List<string> callGetHouses()
-        {
-            HouseList = new Dictionary<int, string>();
-            List<string> res = new List<string>();
-            try
-            {
-                var housesList = Client.GetHouses(MyUsername);
-                for (int i = 0; i < housesList.Length; i++)
-                {
-                    var aux = housesList[i].Split(':');
-                    HouseList.Add(int.Parse(aux[0]), aux[1]);
-                    res.Add(aux[1]);
-                }
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            return res;
-        }
-
-        private bool callLogin()
-        {
-            bool logged = false;
-            try
-            {
-                if (Client.Login(user.Text, pass.Text))
-                {
-                    MyUsername = user.Text;
-                    logged = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            return logged;
-        }
-
-        /// <summary>
-        /// Steps
-        /// </summary>
         private void goToStep1()
         {
             state = 1;
@@ -244,8 +105,6 @@ namespace PDA
             linkLabel1.Visible = false;
 
             labelProgramName.Visible = true;
-
-
             state = 3;
         }
 
@@ -258,7 +117,6 @@ namespace PDA
             {
                 listBox1.Items.Add(floor);
             }
-
             listBox1.Visible = true;
             UpButton.Visible = true;
             DownButton.Visible = true;
@@ -474,8 +332,6 @@ namespace PDA
             Close();
         }
 
-
-
         private void Enter_Click(object sender, EventArgs e)
         {
             switch (state)
@@ -493,8 +349,6 @@ namespace PDA
             }
 
         }
-
-
 
         private void NextButton_Click_1(object sender, EventArgs e)
         {
@@ -526,7 +380,6 @@ namespace PDA
 
         private void SetPropButton_Click(object sender, EventArgs e)
         {
-            // vector?
             string newValue;
             if (PropTextBox.Visible)
             {
@@ -543,41 +396,36 @@ namespace PDA
             }
         }
 
-        /////////////////
-
-
-        private void Form1_KeyDown(object sender, KeyEventArgs e)
-        {
-            if ((e.KeyCode == System.Windows.Forms.Keys.Up))
-            {
-                if (state == 2)
-                    goUp();
-
-            }
-            if ((e.KeyCode == System.Windows.Forms.Keys.Down))
-            {
-                // Down
-                if (state == 2)
-                    goDown();
-            }
-            if ((e.KeyCode == System.Windows.Forms.Keys.Left))
-            {
-                // Left
-            }
-            if ((e.KeyCode == System.Windows.Forms.Keys.Right))
-            {
-                // Right
-            }
-            if ((e.KeyCode == System.Windows.Forms.Keys.Enter))
-            {
-                // Enter
-                if (state == 3)
-                    goToStep2();
-                else if (state == 2)
-                    goToStep1();
-            }
-
-        }
+        //private void Form1_KeyDown(object sender, KeyEventArgs e)
+        //{
+        //    if ((e.KeyCode == System.Windows.Forms.Keys.Up))
+        //    {
+        //        if (state == 2)
+        //            goUp();
+        //    }
+        //    if ((e.KeyCode == System.Windows.Forms.Keys.Down))
+        //    {
+        //        // Down
+        //        if (state == 2)
+        //            goDown();
+        //    }
+        //    if ((e.KeyCode == System.Windows.Forms.Keys.Left))
+        //    {
+        //        // Left
+        //    }
+        //    if ((e.KeyCode == System.Windows.Forms.Keys.Right))
+        //    {
+        //        // Right
+        //    }
+        //    if ((e.KeyCode == System.Windows.Forms.Keys.Enter))
+        //    {
+        //        // Enter
+        //        if (state == 3)
+        //            goToStep2();
+        //        else if (state == 2)
+        //            goToStep1();
+        //    }
+        //}
 
         private void aboutMenu_Click(object sender, EventArgs e)
         {
@@ -586,13 +434,11 @@ namespace PDA
 
         private void addFavoriteMenu_Click(object sender, EventArgs e)
         {
-            MenuItem i = new MenuItem();
-            i.Text = "AAA";
+            //MenuItem i = new MenuItem();
+            //i.Text = "AAA";
             //this.menuItem3.MenuItems.Add(this.addFavoriteMenu);
-            menuFavorites.MenuItems.Add(i);
-
+            //menuFavorites.MenuItems.Add(i);
             //TODO
-
         }
 
     }

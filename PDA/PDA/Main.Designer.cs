@@ -415,7 +415,7 @@
             this.Menu = this.mainMenu1;
             this.Name = "Main";
             this.Text = "DomoMobile";
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
+            //this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.ResumeLayout(false);
 
         }
